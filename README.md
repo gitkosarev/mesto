@@ -14,8 +14,10 @@
 
 #### Планы по развитию проекта
 Создание нового сайта с применением технологий grid, media запросов, а также подключение логики на языке JavaScript.
-Ссылка на макет в [Figma](https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0%3A1)
-[Оптимизация картинок](https://tinypng.com/)
+
+**Полезные ссылки:**
+* [Ссылка на макет в Figma](https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0%3A1)
+* [Оптимизация картинок](https://tinypng.com/)
 
 #### Проект на стадии разработки и доступен по адресу:
 [Место](https://gitkosarev.github.io/russian-travel/index.html)
