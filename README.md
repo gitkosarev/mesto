@@ -20,4 +20,4 @@
 * [Оптимизация картинок](https://tinypng.com/)
 
 #### Проект на стадии разработки и доступен по адресу:
-[Место](https://gitkosarev.github.io/russian-travel/index.html)
+[Место](https://gitkosarev.github.io/mesto/index.html)
