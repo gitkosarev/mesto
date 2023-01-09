@@ -18,6 +18,7 @@
 **Полезные ссылки:**
 * [Ссылка на макет в Figma](https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0%3A1)
 * [Оптимизация картинок](https://tinypng.com/)
+* [Коллекция бесплатных фотографий](https://unsplash.com/)
 
 #### Проект на стадии разработки и доступен по адресу:
 [Место](https://gitkosarev.github.io/mesto/index.html)
