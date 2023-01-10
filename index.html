@@ -12,6 +12,17 @@
   <title>Место</title>
 </head>
 <body class="page">
+  <div class="popup popup_opened">
+    <div class="popup__container">
+      <h2 class="popup__title">Редактировать профиль</h2>
+      <form class="popup__form" action="" method="post"  autocomplete="off">
+        <input class="popup__input-text" type="text" name="name" id="name" required placeholder="Имя">
+        <input class="popup__input-text" type="text" name="description" id="description" required required placeholder="О себе">
+        <button class="popup__button" type="submit">Сохранить</button>
+      </form>
+      <button class="popup__close-button"></button>
+    </div>
+  </div>
   <header class="header">
     <div class="header__logo"></div>
     <div class="header__line"></div>
