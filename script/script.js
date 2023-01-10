@@ -42,5 +42,5 @@ function closeProfileEdit() {
 };
 
 function addSomeLove() {
-  console.log('❤️');
+  console.log('☮️ & ❤️');
 };
