@@ -1,6 +1,7 @@
 let editProfileButton = document.querySelector('.profile__edit-button');
 let closeProfileButton = document.querySelector('.popup__close-button');
 let formElement = document.querySelector('.popup__form');
+let heartElement = document.querySelector('.card__like-button');
 
 initEventListeners();
 
@@ -8,6 +9,7 @@ function initEventListeners() {
   editProfileButton.addEventListener('click', openProfileEdit);
   closeProfileButton.addEventListener('click', closeProfileEdit);
   formElement.addEventListener('submit', updateProfileInfo);
+  heartElement.addEventListener('click', addSomeLove);
 };
 
 function fillProfile() {
@@ -37,4 +39,8 @@ function openProfileEdit() {
 function closeProfileEdit() {
   let popupBlock = document.querySelector('.popup');
   popupBlock.classList.remove('popup_opened');
+};
+
+function addSomeLove() {
+  console.log('❤️');
 };
