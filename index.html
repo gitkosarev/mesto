@@ -12,84 +12,83 @@
   <title>Место</title>
 </head>
 <body class="page">
-  <div class="popup">
-    <div class="popup__container">
-      <h2 class="popup__title">Редактировать профиль</h2>
-      <form class="popup__form" action="#" method="post"  autocomplete="off">
-        <input class="popup__input-text" type="text" name="name" id="name" required placeholder="Имя">
-        <input class="popup__input-text" type="text" name="description" id="description" required placeholder="О себе">
-        <button class="popup__button" type="submit">Сохранить</button>
-      </form>
-      <button class="popup__close-button"></button>
-    </div>
-  </div>
   <header class="header">
     <div class="header__logo"></div>
-    <div class="header__line"></div>
   </header>
   <main class="content">
     <section class="profile">
       <img class="profile__avatar" src="./images/profile-avatar.png" alt="фото профиля пользователя">
       <div class="profile__info">
         <h1 class="profile__name">Жак-Ив Кусто</h1>
-        <button class="profile__edit-button">
+        <button class="profile__edit-button" type="button">
           <img class="profile__edit-image" src="./images/edit-button.svg" alt="иконка редактирования профиля">
         </button>
         <p class="profile__description">Исследователь океана</p>
       </div>
-      <button class="profile__add-button">
+      <button class="profile__add-button" type="button">
         <img class="profile__add-image" src="./images/add-button.svg" alt="иконка добавления">
       </button>
     </section>
     <section class="cards">
-      <div class="card">
+      <article class="card">
         <img class="card__image" src="./images/cards/altai.jpg" alt="фото Алтай">
         <div class="card__description">
-          <h3 class="card__title">Алтай</h3>
-          <button class="card__like-button"></button>
+          <h2 class="card__title">Алтай</h2>
+          <button class="card__like-button" type="button"></button>
         </div>
-      </div>
-      <div class="card">
+      </article>
+      <article class="card">
         <img class="card__image" src="./images/cards/kamchatka.jpg" alt="фото Камчатка">
         <div class="card__description">
-          <h3 class="card__title">Камчатка</h3>
-          <button class="card__like-button"></button>
+          <h2 class="card__title">Камчатка</h2>
+          <button class="card__like-button" type="button"></button>
         </div>
-      </div>
-      <div class="card">
+      </article>
+      <article class="card">
         <img class="card__image" src="./images/cards/baikal.jpg" alt="фото Байкал">
         <div class="card__description">
-          <h3 class="card__title">Байкал</h3>
-          <button class="card__like-button"></button>
+          <h2 class="card__title">Байкал</h2>
+          <button class="card__like-button" type="button"></button>
         </div>
-      </div>
-      <div class="card">
+      </article>
+      <article class="card">
         <img class="card__image" src="./images/cards/dombai.png" alt="фото Домбай">
         <div class="card__description">
-          <h3 class="card__title">Домбай</h3>
-          <button class="card__like-button"></button>
+          <h2 class="card__title">Домбай</h2>
+          <button class="card__like-button" type="button"></button>
         </div>
-      </div>
-      <div class="card">
+      </article>
+      <article class="card">
         <img class="card__image" src="./images/cards/elbrus.png" alt="фото Эльбрус">
         <div class="card__description">
-          <h3 class="card__title">Эльбрус</h3>
-          <button class="card__like-button"></button>
+          <h2 class="card__title">Эльбрус</h2>
+          <button class="card__like-button" type="button"></button>
         </div>
-      </div>
-      <div class="card">
+      </article>
+      <article class="card">
         <img class="card__image" src="./images/cards/karachaevsk.png" alt="фото Карачаевск">
         <div class="card__description">
-          <h3 class="card__title">Карачаевск</h3>
-          <button class="card__like-button"></button>
+          <h2 class="card__title">Карачаевск</h2>
+          <button class="card__like-button" type="button"></button>
         </div>
-      </div>
+      </article>
     </section>
   </main>
   <footer class="footer">
     <p class="footer__copy">&copy; 2023 Mesto Russia</p>
   </footer>
+  <div class="popup">
+    <div class="popup__container">
+      <h3 class="popup__title">Редактировать профиль</h3>
+      <form class="popup__form" name="editProfileForm" action="#" method="post"  autocomplete="off">
+        <input class="popup__input-text popup__input-text_name" type="text" name="name" required placeholder="Имя">
+        <input class="popup__input-text popup__input-text_description" type="text" name="description" required placeholder="О себе">
+        <button class="popup__button" type="submit">Сохранить</button>
+      </form>
+      <button class="popup__close-button" type="button"></button>
+    </div>
+  </div>
 
-  <script src="script/script.js"></script>
+  <script src="scripts/index.js"></script>
 </body>
 </html>
