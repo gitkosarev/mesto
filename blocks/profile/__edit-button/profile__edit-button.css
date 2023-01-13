@@ -2,12 +2,10 @@
   background-image: url(../../../images/edit-button.svg);
   background-color: #000;
   background-repeat: no-repeat;
-  background-size: cover;
   background-position: center;
   background-size: 10px;
   cursor: pointer;
   border: 1px solid #FFF;
-  background-color: #000;
   width: 24px;
   height: 24px;
   margin: 0 0 0 18px;
