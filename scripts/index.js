@@ -4,30 +4,29 @@ let editProfileButton = document.querySelector('.profile__edit-button'),
     heartElement = document.querySelector('.card__like-button');
 
 let nameInput = document.querySelector('.popup__input-value_name'),
-    descriptionInput = document.querySelector('.popup__input-value_description');
+    descriptionInput = document.querySelector('.popup__input-value_description'),
+    profileName = document.querySelector('.profile__name'),
+    profileDescription = document.querySelector('.profile__description'),
+    popupBlock = document.querySelector('.popup');
 
 function fillProfile() {
-  let profileName = document.querySelector('.profile__name').textContent,
-      profileDescription = document.querySelector('.profile__description').textContent;
-  nameInput.value = profileName;
-  descriptionInput.value = profileDescription;
+  nameInput.value = profileName.textContent;
+  descriptionInput.value = profileDescription.textContent;
 };
 
 function updateProfileInfo(evt) {
   evt.preventDefault();
-  document.querySelector('.profile__name').textContent = nameInput.value;
-  document.querySelector('.profile__description').textContent = descriptionInput.value;
+  profileName.textContent = nameInput.value;
+  profileDescription.textContent = descriptionInput.value;
   closeProfileEdit();
 };
 
 function openProfileEdit() {
-  let popupBlock = document.querySelector('.popup');
   fillProfile();
   popupBlock.classList.add('popup_opened');
 };
 
 function closeProfileEdit() {
-  let popupBlock = document.querySelector('.popup');
   popupBlock.classList.remove('popup_opened');
 };
 
