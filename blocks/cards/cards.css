@@ -14,6 +14,7 @@
   .cards {
 	grid-template-columns: repeat(2, 282px);
 	grid-template-rows: repeat(3, 361px);
+	margin: 36px 0 0;
   }
 }
 
@@ -22,5 +23,6 @@
     grid-template-columns: 282px;
 	grid-template-rows: repeat(6, 361px);
 	gap: 20px 0;
+	margin: 36px 0 0;
   }
 }
