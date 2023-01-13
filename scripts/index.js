@@ -3,8 +3,8 @@ let editProfileButton = document.querySelector('.profile__edit-button'),
     formElement = document.querySelector('.popup__form'),
     heartElement = document.querySelector('.card__like-button');
 
-let nameInput = document.querySelector('.popup__input-value_name'),
-    descriptionInput = document.querySelector('.popup__input-value_description'),
+let nameInput = document.querySelector('.popup__input_value_name'),
+    descriptionInput = document.querySelector('.popup__input_value_description'),
     profileName = document.querySelector('.profile__name'),
     profileDescription = document.querySelector('.profile__description'),
     popupBlock = document.querySelector('.popup');
