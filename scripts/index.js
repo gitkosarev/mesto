@@ -72,10 +72,6 @@ function closeProfileEdit() {
   popupBlock.classList.remove('popup_opened');
 };
 
-function addSomeLove() {
-  console.log('☮️ & ❤️');
-};
-
 editProfileButton.addEventListener('click', openProfileEdit);
 closeProfileButton.addEventListener('click', closeProfileEdit);
 formElement.addEventListener('submit', updateProfileInfo);
