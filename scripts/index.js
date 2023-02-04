@@ -46,6 +46,7 @@ function initCards() {
       clone.querySelector('.card__image').src = item.link;
       clone.querySelector('.card__image').alt = item.alt;
       clone.querySelector('.card__title').textContent = item.name;
+      clone.querySelector('.card__like-button').addEventListener('click', onLikeClicked);
       cardsEl.appendChild(clone);
     });
   }
@@ -70,6 +71,11 @@ function openProfileEdit() {
 
 function closeProfileEdit() {
   popupBlock.classList.remove('popup_opened');
+};
+
+function onLikeClicked(event) {
+  let buttonEl = event.target;
+  buttonEl.classList.toggle('card__like-button_active');
 };
 
 editProfileButton.addEventListener('click', openProfileEdit);
