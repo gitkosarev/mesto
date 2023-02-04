@@ -1,3 +1,25 @@
+const initialCards = [
+  {
+    name: 'Алтай',
+    link: './images/cards/altai.jpg'
+  },{
+    name: 'Камчатка',
+    link: './images/cards/kamchatka.jpg'
+  },{
+    name: 'Байкал',
+    link: './images/cards/baikal.jpg'
+  },{
+    name: 'Домбай',
+    link: './images/cards/dombai.png'
+  },{
+    name: 'Эльбрус',
+    link: './images/cards/elbrus.png'
+  },{
+    name: 'Карачаевск',
+    link: './images/cards/karachaevsk.png'
+  }
+];
+
 let editProfileButton = document.querySelector('.profile__edit-button'),
     closeProfileButton = document.querySelector('.popup__close-button'),
     formElement = document.querySelector('.popup__form'),
