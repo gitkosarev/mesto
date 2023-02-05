@@ -65,6 +65,12 @@ function fillProfile() {
   editProfileFormInputDescription.value = profileDescription.textContent;
 };
 
+function clearForm(buttonEl) {
+  let popupEl = buttonEl.closest('.popup');
+  popupEl.querySelector('.popup__input_value_name').value = '';
+  popupEl.querySelector('.popup__input_value_description').value = '';
+};
+
 function onEditProfileSubmit(event) {
   event.preventDefault();
   editProfile();
@@ -78,11 +84,11 @@ function editProfile() {
 
 function onAddCardSubmit(event) {
   event.preventDefault();
-  addCard();
+  addCard(event);
   closePopup(event);
 };
 
-function addCard() {
+function addCard(event) {
   console.log('addCard clicked');
 };
 
@@ -102,6 +108,7 @@ function openPopup(element) {
 function closePopup(event) {
   let buttonEl = event.target;
   buttonEl.closest('.popup').classList.remove('popup_opened');
+  clearForm(buttonEl);
 };
 
 function onLikeClicked(event) {
