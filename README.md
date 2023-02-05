@@ -23,4 +23,4 @@
 #### Проект на стадии разработки и доступен по адресу:
 [Место](https://gitkosarev.github.io/mesto/index.html)
 
-![This is an image](https://myoctocat.com/assets/images/base-octocat.svg)
+![This is an image](https://esquire.kz/wp-content/uploads/2019/06/e5d59868-71df-4389-bb85-9ba52baa934a.jpeg)
