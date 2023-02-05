@@ -64,15 +64,24 @@ function fillProfile() {
   editProfileFormInputDescription.value = profileDescription.textContent;
 };
 
-function updateProfileInfo(event) {
+function onEditProfileSubmit(event) {
   event.preventDefault();
-  profileName.textContent = editProfileFormInputName.value;
-  profileDescription.textContent = editProfileFormInputDescription.value;
-  closeProfileEdit();
+  editProfile();
+  closePopup(event);
 };
 
-function addCard(event) {
+function editProfile() {
+  profileName.textContent = editProfileFormInputName.value;
+  profileDescription.textContent = editProfileFormInputDescription.value;
+};
+
+function onAddCardSubmit(event) {
   event.preventDefault();
+  addCard();
+  closePopup(event);
+};
+
+function addCard() {
   console.log('addCard clicked');
 };
 
@@ -81,21 +90,13 @@ function openProfileEdit() {
   editProfilePopup.classList.add('popup_opened');
 };
 
-function closeProfileEdit() {
-  editProfilePopup.classList.remove('popup_opened');
+function openAddCard() {
+  addCardPopup.classList.add('popup_opened');
 };
 
 function closePopup(event) {
   let buttonEl = event.target;
   buttonEl.closest('.popup').classList.remove('popup_opened');
-};
-
-function openAddCard() {
-  addCardPopup.classList.add('popup_opened');
-};
-
-function closeAddCard() {
-  addCardPopup.classList.remove('popup_opened');
 };
 
 function onLikeClicked(event) {
@@ -107,7 +108,7 @@ closePopupButtons.forEach(function(button) {
   button.addEventListener('click', closePopup);
 });
 editProfileButton.addEventListener('click', openProfileEdit);
-editProfileForm.addEventListener('submit', updateProfileInfo);
-addCardForm.addEventListener('submit', addCard);
+editProfileForm.addEventListener('submit', onEditProfileSubmit);
+addCardForm.addEventListener('submit', onAddCardSubmit);
 
 initCards();
