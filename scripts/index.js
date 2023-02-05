@@ -3,38 +3,46 @@ const initialCards = [
     name: 'Алтай',
     link: './images/cards/altai.jpg',
     alt: 'фото Алтай'
-  },{
+  },
+  {
     name: 'Камчатка',
     link: './images/cards/kamchatka.jpg',
     alt: 'фото Камчатка'
-  },{
+  },
+  {
     name: 'Байкал',
     link: './images/cards/baikal.jpg',
     alt: 'фото Байкал'
-  },{
+  },
+  {
     name: 'Домбай',
     link: './images/cards/dombai.png',
     alt: 'фото Домбай'
-  },{
+  },
+  {
     name: 'Эльбрус',
     link: './images/cards/elbrus.png',
     alt: 'фото Эльбрус'
-  },{
+  },
+  {
     name: 'Карачаевск',
     link: './images/cards/karachaevsk.png',
     alt: 'фото Карачаевск'
   }
 ];
 
-let editProfileButton = document.querySelector('.profile__edit-button'),
-    closeProfileButton = document.querySelector('.popup__close-button'),
-    formElement = document.querySelector('.popup__form');
+let closePopupButtons = document.querySelectorAll('.popup__close-button'),
+    editProfileButton = document.querySelector('.profile__edit-button'),
+    editProfileForm = document.querySelector('#editProfileForm'),
+    editProfileFormInputName = editProfileForm.querySelector('.popup__input_value_name'),
+    editProfileFormInputDescription = editProfileForm.querySelector('.popup__input_value_description'),
+    addCardButton = document.querySelector('.profile__add-button'),
+    addCardForm = document.querySelector('#addCardForm');
 
-let nameInput = document.querySelector('.popup__input_value_name'),
-    descriptionInput = document.querySelector('.popup__input_value_description'),
-    profileName = document.querySelector('.profile__name'),
+let profileName = document.querySelector('.profile__name'),
     profileDescription = document.querySelector('.profile__description'),
-    popupBlock = document.querySelector('.popup');
+    editProfilePopup = document.querySelector('#editProfilePopup'),
+    addCardPopup = document.querySelector('#addCardPopup');
 
 
 function initCards() {
@@ -53,24 +61,47 @@ function initCards() {
 };
 
 function fillProfile() {
-  nameInput.value = profileName.textContent;
-  descriptionInput.value = profileDescription.textContent;
+  editProfileFormInputName.value = profileName.textContent;
+  editProfileFormInputDescription.value = profileDescription.textContent;
 };
 
-function updateProfileInfo(evt) {
-  evt.preventDefault();
-  profileName.textContent = nameInput.value;
-  profileDescription.textContent = descriptionInput.value;
-  closeProfileEdit();
+function onEditProfileSubmit(event) {
+  event.preventDefault();
+  editProfile();
+  closePopup(event);
 };
 
-function openProfileEdit() {
+function editProfile() {
+  profileName.textContent = editProfileFormInputName.value;
+  profileDescription.textContent = editProfileFormInputDescription.value;
+};
+
+function onAddCardSubmit(event) {
+  event.preventDefault();
+  addCard();
+  closePopup(event);
+};
+
+function addCard() {
+  console.log('addCard clicked');
+};
+
+function onEditProfileButton() {
   fillProfile();
-  popupBlock.classList.add('popup_opened');
+  openPopup(editProfilePopup);
 };
 
-function closeProfileEdit() {
-  popupBlock.classList.remove('popup_opened');
+function onAddCardButton() {
+  openPopup(addCardPopup);
+};
+
+function openPopup(element) {
+  element.classList.add('popup_opened');
+};
+
+function closePopup(event) {
+  let buttonEl = event.target;
+  buttonEl.closest('.popup').classList.remove('popup_opened');
 };
 
 function onLikeClicked(event) {
@@ -78,8 +109,14 @@ function onLikeClicked(event) {
   buttonEl.classList.toggle('card__like-button_active');
 };
 
-editProfileButton.addEventListener('click', openProfileEdit);
-closeProfileButton.addEventListener('click', closeProfileEdit);
-formElement.addEventListener('submit', updateProfileInfo);
+closePopupButtons.forEach(function(button) {
+  button.addEventListener('click', closePopup);
+});
+
+editProfileButton.addEventListener('click', onEditProfileButton);
+editProfileForm.addEventListener('submit', onEditProfileSubmit);
+
+addCardButton.addEventListener('click', onAddCardButton);
+addCardForm.addEventListener('submit', onAddCardSubmit);
 
 initCards();

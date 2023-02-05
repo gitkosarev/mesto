@@ -30,12 +30,24 @@
   <footer class="footer">
     <p class="footer__copy">&copy; 2023 Mesto Russia</p>
   </footer>
-  <div class="popup">
+  
+  <div class="popup" id="editProfilePopup">
     <div class="popup__container">
       <h3 class="popup__title">Редактировать профиль</h3>
-      <form class="popup__form" name="editProfileForm" action="#" method="post"  autocomplete="off">
+      <form class="popup__form" id="editProfileForm" name="editProfileForm" action="#" method="post"  autocomplete="off">
         <input class="popup__input popup__input_value_name" type="text" name="name" required placeholder="Имя">
         <input class="popup__input popup__input_value_description" type="text" name="description" required placeholder="О себе">
+        <button class="popup__button" type="submit">Сохранить</button>
+      </form>
+      <button class="popup__close-button" type="button"></button>
+    </div>
+  </div>
+  <div class="popup" id="addCardPopup">
+    <div class="popup__container">
+      <h3 class="popup__title">Новое место</h3>
+      <form class="popup__form" id="addCardForm" name="addCardForm" action="#" method="post"  autocomplete="off">
+        <input class="popup__input popup__input_value_name" type="text" name="name" required placeholder="Название">
+        <input class="popup__input popup__input_value_description" type="text" name="description" required placeholder="Ссылка на картинку">
         <button class="popup__button" type="submit">Сохранить</button>
       </form>
       <button class="popup__close-button" type="button"></button>
