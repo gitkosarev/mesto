@@ -36,6 +36,7 @@ let closePopupButtons = document.querySelectorAll('.popup__close-button'),
     editProfileForm = document.querySelector('#editProfileForm'),
     editProfileFormInputName = editProfileForm.querySelector('.popup__input_value_name'),
     editProfileFormInputDescription = editProfileForm.querySelector('.popup__input_value_description'),
+    addCardButton = document.querySelector('.profile__add-button'),
     addCardForm = document.querySelector('#addCardForm');
 
 let profileName = document.querySelector('.profile__name'),
@@ -85,13 +86,17 @@ function addCard() {
   console.log('addCard clicked');
 };
 
-function openProfileEdit() {
+function onEditProfileButton() {
   fillProfile();
-  editProfilePopup.classList.add('popup_opened');
+  openPopup(editProfilePopup);
 };
 
-function openAddCard() {
-  addCardPopup.classList.add('popup_opened');
+function onAddCardButton() {
+  openPopup(addCardPopup);
+};
+
+function openPopup(element) {
+  element.classList.add('popup_opened');
 };
 
 function closePopup(event) {
@@ -107,8 +112,11 @@ function onLikeClicked(event) {
 closePopupButtons.forEach(function(button) {
   button.addEventListener('click', closePopup);
 });
-editProfileButton.addEventListener('click', openProfileEdit);
+
+editProfileButton.addEventListener('click', onEditProfileButton);
 editProfileForm.addEventListener('submit', onEditProfileSubmit);
+
+addCardButton.addEventListener('click', onAddCardButton);
 addCardForm.addEventListener('submit', onAddCardSubmit);
 
 initCards();
