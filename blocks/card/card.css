@@ -2,6 +2,7 @@
   overflow: hidden;
   background-color: #FFF;
 	border-radius: 10px;
+  position: relative;
   margin: 0;
   padding: 0;
 }
