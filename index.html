@@ -20,10 +20,10 @@
       <img class="profile__avatar" src="./images/profile-avatar.png" alt="фото профиля пользователя">
       <div class="profile__info">
         <h1 class="profile__name">Жак-Ив Кусто</h1>
-        <button class="profile__edit-button" type="button"></button>
+        <button class="button profile__edit-button" type="button"></button>
         <p class="profile__description">Исследователь океана</p>
       </div>
-      <button class="profile__add-button" type="button"></button>
+      <button class="button profile__add-button" type="button"></button>
     </section>
     <section class="cards"></section>
   </main>
@@ -37,20 +37,20 @@
       <form class="popup__form" id="editProfileForm" name="editProfileForm" action="#" method="post"  autocomplete="off">
         <input class="popup__input popup__input_value_name" type="text" name="name" required placeholder="Имя">
         <input class="popup__input popup__input_value_description" type="text" name="description" required placeholder="О себе">
-        <button class="popup__button" type="submit">Сохранить</button>
+        <button class="button popup__button" type="submit">Сохранить</button>
       </form>
-      <button class="popup__close-button" type="button"></button>
+      <button class="button popup__close-button" type="button"></button>
     </div>
   </div>
   <div class="popup" id="addCardPopup">
     <div class="popup__container">
       <h3 class="popup__title">Новое место</h3>
-      <form class="popup__form" id="addCardForm" name="addCardForm" action="#" method="post"  autocomplete="off">
+      <form class="popup__form" id="addCardForm" name="addCardForm" action="#" method="post" autocomplete="off">
         <input class="popup__input popup__input_value_name" type="text" name="name" required placeholder="Название">
         <input class="popup__input popup__input_value_description" type="text" name="description" required placeholder="Ссылка на картинку">
-        <button class="popup__button" type="submit">Сохранить</button>
+        <button class="button popup__button" type="submit">Сохранить</button>
       </form>
-      <button class="popup__close-button" type="button"></button>
+      <button class="button popup__close-button" type="button"></button>
     </div>
   </div>
 
@@ -59,7 +59,7 @@
       <img class="card__image" src="" alt="">
       <div class="card__description">
         <h2 class="card__title"></h2>
-        <button class="card__like-button" type="button"></button>
+        <button class="button card__like-button" type="button"></button>
       </div>
     </article>
   </template>
