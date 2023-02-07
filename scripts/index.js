@@ -39,23 +39,37 @@ let closePopupButtons = document.querySelectorAll('.popup__close-button'),
     addCardButton = document.querySelector('.profile__add-button'),
     addCardForm = document.querySelector('#addCardForm');
 
-let profileName = document.querySelector('.profile__name'),
+let cardsElement = document.querySelector('.cards'),
+    cardTemplate = document.querySelector('#cardTemplate'),
+    profileName = document.querySelector('.profile__name'),
     profileDescription = document.querySelector('.profile__description'),
     editProfilePopup = document.querySelector('#editProfilePopup'),
     addCardPopup = document.querySelector('#addCardPopup');
 
 
+function getFilledTemplate(cardConfig) {
+  let clone = cardTemplate.content.cloneNode(true);
+  clone.querySelector('.card__image').src = cardConfig.link;
+  clone.querySelector('.card__image').alt = cardConfig.alt;
+  clone.querySelector('.card__title').textContent = cardConfig.name;
+  clone.querySelector('.card__like-button').addEventListener('click', onLikeClicked);
+  return clone;
+};
+
+function appendCard(cardConfig) {
+  let clone = getFilledTemplate(cardConfig);
+  cardsElement.appendChild(clone);
+};
+
+function prependCard(cardConfig) {
+  let clone = getFilledTemplate(cardConfig);
+  cardsElement.prepend(clone);
+};
+
 function initCards() {
   if ('content' in document.createElement('template')) {
-    let cardsEl = document.querySelector('.cards');
-    let cardTemp = document.querySelector('#cardTemplate');
-    initialCards.forEach(function(item) {
-      let clone = cardTemp.content.cloneNode(true);
-      clone.querySelector('.card__image').src = item.link;
-      clone.querySelector('.card__image').alt = item.alt;
-      clone.querySelector('.card__title').textContent = item.name;
-      clone.querySelector('.card__like-button').addEventListener('click', onLikeClicked);
-      cardsEl.appendChild(clone);
+    initialCards.forEach(function(config) {
+      appendCard(config);
     });
   }
 };
@@ -89,7 +103,15 @@ function onAddCardSubmit(event) {
 };
 
 function addCard(event) {
-  console.log('addCard clicked');
+  let popupEl = event.target.closest('.popup');
+  let nameValue = popupEl.querySelector('.popup__input_value_name').value;
+  let descriptionValue = popupEl.querySelector('.popup__input_value_description').value;
+  const config = {
+    name: nameValue,
+    link: descriptionValue,
+    alt: `фото ${nameValue}`
+  };
+  prependCard(config);
 };
 
 function onEditProfileButton() {
