@@ -53,6 +53,7 @@ function getFilledTemplate(cardConfig) {
   clone.querySelector('.card__image').alt = cardConfig.alt;
   clone.querySelector('.card__title').textContent = cardConfig.name;
   clone.querySelector('.card__like-button').addEventListener('click', onLikeClicked);
+  clone.querySelector('.card__trash-button').addEventListener('click', onTrashClicked);
   return clone;
 };
 
@@ -136,6 +137,12 @@ function closePopup(event) {
 function onLikeClicked(event) {
   let buttonEl = event.target;
   buttonEl.classList.toggle('card__like-button_active');
+};
+
+function onTrashClicked(event) {
+  let buttonEl = event.target;
+  let cardEl = buttonEl.closest('.card');
+  cardEl.remove();
 };
 
 closePopupButtons.forEach(function(button) {
