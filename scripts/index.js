@@ -25,9 +25,9 @@ const initialCards = [
     alt: 'фото Эльбрус'
   },
   {
-    name: 'Карачаевск',
-    link: './images/cards/karachaevsk.png',
-    alt: 'фото Карачаевск'
+    name: 'Альпы',
+    link: './images/cards/alps.jpg',
+    alt: 'фото Альпы'
   }
 ];
 
@@ -44,7 +44,10 @@ let cardsElement = document.querySelector('.cards'),
     profileName = document.querySelector('.profile__name'),
     profileDescription = document.querySelector('.profile__description'),
     editProfilePopup = document.querySelector('#editProfilePopup'),
-    addCardPopup = document.querySelector('#addCardPopup');
+    addCardPopup = document.querySelector('#addCardPopup'),
+    openImagePopup = document.querySelector('#openImagePopup'),
+    popupImageEl = openImagePopup.querySelector('.popup__image'),
+    popupImageCaptionEl = openImagePopup.querySelector('.popup__caption');
 
 
 function getFilledTemplate(cardConfig) {
@@ -54,6 +57,7 @@ function getFilledTemplate(cardConfig) {
   clone.querySelector('.card__title').textContent = cardConfig.name;
   clone.querySelector('.card__like-button').addEventListener('click', onLikeClicked);
   clone.querySelector('.card__trash-button').addEventListener('click', onTrashClicked);
+  clone.querySelector('.card__image').addEventListener('click', onOpenImageClicked);
   return clone;
 };
 
@@ -82,8 +86,17 @@ function fillProfile() {
 
 function clearForm(buttonEl) {
   let popupEl = buttonEl.closest('.popup');
-  popupEl.querySelector('.popup__input_value_name').value = '';
-  popupEl.querySelector('.popup__input_value_description').value = '';
+  let inputNameEl = popupEl.querySelector('.popup__input_value_name');
+  if (inputNameEl) { inputNameEl.value = ''; }
+  let inputDescriptionEl = popupEl.querySelector('.popup__input_value_description');
+  if (inputDescriptionEl) { inputDescriptionEl.value = ''; }
+  let imageEl = popupEl.querySelector('.popup__image');
+  if (imageEl) {
+    imageEl.src = '#';
+    imageEl.alt = '';
+  }
+  let imageCaptionEl = popupEl.querySelector('.popup__caption');
+  if (imageCaptionEl) { imageCaptionEl.textContent = ''; }
 };
 
 function onEditProfileSubmit(event) {
@@ -143,6 +156,16 @@ function onTrashClicked(event) {
   let buttonEl = event.target;
   let cardEl = buttonEl.closest('.card');
   cardEl.remove();
+};
+
+function onOpenImageClicked(event) {
+  let imageEl = event.target;
+  let cardEl = imageEl.closest('.card');
+  let cardTitle = cardEl.querySelector('.card__title').textContent;
+  popupImageEl.src = imageEl.src;
+  popupImageEl.alt = imageEl.alt;
+  popupImageCaptionEl.textContent = cardTitle;
+  openPopup(openImagePopup);
 };
 
 closePopupButtons.forEach(function(button) {
