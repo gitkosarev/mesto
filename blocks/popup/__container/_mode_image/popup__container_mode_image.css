@@ -1,9 +1,9 @@
 .popup__container_mode_image {
   color: #FFF;
-  background-color: #000;
+  background-color: transparent;
   box-shadow: none;
   border-radius: 0;
-  max-width: none;
+  width: auto;
 }
 
 @media screen and (max-width: 767px) {
