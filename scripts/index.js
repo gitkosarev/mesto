@@ -91,7 +91,7 @@ function fillProfile() {
 function onEditProfileSubmit(event) {
   event.preventDefault();
   editProfile();
-  closePopup(event);
+  closePopup(editProfilePopup);
   editProfileForm.reset();
 };
 
@@ -125,25 +125,42 @@ function onAddCardButton() {
   openPopup(addCardPopup);
 };
 
-function openPopup(element) {
-  element.classList.add('popup_opened');
+function openPopup(popupEl) {
+  popupEl.classList.add('popup_opened');
+  document.addEventListener('keydown', handleKeydown);
 };
 
-function closePopup(event) {
-  const buttonEl = event.target;
-  buttonEl.closest('.popup').classList.remove('popup_opened');
+function closePopup(popupEl) {
+  popupEl.classList.remove('popup_opened');
+  document.removeEventListener('keydown', handleKeydown);
 };
 
 function onOverlayClicked(event) {
-  const target = event.target;
-  if (Array.from(event.target.classList).indexOf('popup_opened') > 0) {
-    closePopup(event);
+  const targetEl = event.target;
+  if (Array.from(targetEl.classList).indexOf('popup_opened') > 0) {
+    closePopup(targetEl);
   }
 };
 
-function onCloseAddCardPopup(event) {
-  closePopup(event);
+function handleKeydown(event) {
+  if (event.key === 'Escape') {
+    const openedPopup = document.querySelector('.popup_opened');
+    closePopup(openedPopup);
+  }
+};
+
+function onCloseEditProfilePopup() {
+  closePopup(editProfilePopup);
+  editProfileForm.reset();
+};
+
+function onCloseAddCardPopup() {
+  closePopup(addCardPopup);
   addCardForm.reset();
+};
+
+function onCloseOpenImagePopup() {
+  closePopup(openImagePopup);
 };
 
 function onLikeClicked(event) {
@@ -217,9 +234,9 @@ function enableValidation() {
   });
 };
 
-closeEditProfilePopup.addEventListener('click', closePopup);
+closeEditProfilePopup.addEventListener('click', onCloseEditProfilePopup);
 closeAddCardPopup.addEventListener('click', onCloseAddCardPopup);
-closeOpenImagePopup.addEventListener('click', closePopup);
+closeOpenImagePopup.addEventListener('click', onCloseOpenImagePopup);
 
 editProfileButton.addEventListener('click', onEditProfileButton);
 editProfileForm.addEventListener('submit', onEditProfileSubmit);
