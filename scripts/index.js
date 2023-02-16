@@ -31,7 +31,8 @@ const initialCards = [
   }
 ];
 
-const editProfileButton = document.querySelector('.profile__edit-button'),
+const popupList = Array.from(document .querySelectorAll('.popup')),
+  editProfileButton = document.querySelector('.profile__edit-button'),
   editProfileForm = document.querySelector('#editProfileForm'),
   editProfileFormInputName = editProfileForm.querySelector('.popup__input_value_name'),
   editProfileFormInputDescription = editProfileForm.querySelector('.popup__input_value_description'),
@@ -133,6 +134,13 @@ function closePopup(event) {
   buttonEl.closest('.popup').classList.remove('popup_opened');
 };
 
+function onOverlayClicked(event) {
+  const target = event.target;
+  if (Array.from(event.target.classList).indexOf('popup_opened') > 0) {
+    closePopup(event);
+  }
+};
+
 function onCloseAddCardPopup(event) {
   closePopup(event);
   addCardForm.reset();
@@ -218,6 +226,10 @@ editProfileForm.addEventListener('submit', onEditProfileSubmit);
 
 addCardButton.addEventListener('click', onAddCardButton);
 addCardForm.addEventListener('submit', onAddCardSubmit);
+
+popupList.forEach((popupEl) => {
+  popupEl.addEventListener('click', onOverlayClicked);
+});
 
 initCards();
 enableValidation();
