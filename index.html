@@ -34,10 +34,12 @@
   <div class="popup" id="editProfilePopup">
     <div class="popup__container">
       <h3 class="popup__title">Редактировать профиль</h3>
-      <form class="popup__form" id="editProfileForm" name="editProfileForm" action="#" method="post"  autocomplete="off">
-        <input class="popup__input popup__input_value_name" type="text" name="name" required placeholder="Имя">
-        <input class="popup__input popup__input_value_description" type="text" name="description" required placeholder="О себе">
-        <button class="button popup__button" type="submit">Сохранить</button>
+      <form class="popup__form" id="editProfileForm" name="editProfileForm" action="#" method="post"  autocomplete="off" novalidate>
+        <input id="profile-name" class="popup__input popup__input_value_name" type="text" name="name" required placeholder="Имя" minlength="2" maxlength="40">
+        <span class="profile-name-error popup__input-error"></span>
+        <input id="profile-description" class="popup__input popup__input_value_description" type="text" name="description" required placeholder="О себе" minlength="2" maxlength="200">
+        <span class="profile-description-error popup__input-error"></span>
+        <button class="button popup__submit" type="submit">Сохранить</button>
       </form>
       <button class="button popup__close-button" type="button"></button>
     </div>
@@ -45,10 +47,12 @@
   <div class="popup" id="addCardPopup">
     <div class="popup__container">
       <h3 class="popup__title">Новое место</h3>
-      <form class="popup__form" id="addCardForm" name="addCardForm" action="#" method="post" autocomplete="off">
-        <input class="popup__input popup__input_value_name" type="text" name="name" required placeholder="Название">
-        <input class="popup__input popup__input_value_description" type="text" name="description" required placeholder="Ссылка на картинку">
-        <button class="button popup__button" type="submit">Сохранить</button>
+      <form class="popup__form" id="addCardForm" name="addCardForm" action="#" method="post" autocomplete="off" novalidate>
+        <input id="card-name" class="popup__input popup__input_value_name" type="text" name="name" required placeholder="Название" minlength="2" maxlength="30">
+        <span class="card-name-error popup__input-error"></span>
+        <input id="card-link" class="popup__input popup__input_value_description" type="url" name="description" required placeholder="Ссылка на картинку">
+        <span class="card-link-error popup__input-error"></span>
+        <button class="button popup__submit" type="submit">Сохранить</button>
       </form>
       <button class="button popup__close-button" type="button"></button>
     </div>
