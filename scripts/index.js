@@ -109,6 +109,7 @@ function editProfile() {
 function handleAddCardSubmit(event) {
   event.preventDefault();
   addCard();
+  addCardForm.reset();
   closePopup(addCardPopup);
   toggleButtonState(addCardForm, validationConfig);
 };
