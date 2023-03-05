@@ -1,3 +1,6 @@
+import Card from "./Card.js";
+import FormValidator from "./FormValidator.js";
+
 const initialCards = [
   {
     name: 'Алтай',
@@ -173,7 +176,6 @@ addCardButtonEl.addEventListener('click', handleAddCardClick);
 addCardForm.addEventListener('submit', handleAddCardSubmit);
 
 popupList.forEach((popup) => {
-  // больше спасибо за такое решение - супер!
   popup.addEventListener('mousedown', (event) => {
     if (event.target.classList.contains('popup_opened')) {
       closePopup(popup);
@@ -185,4 +187,10 @@ popupList.forEach((popup) => {
 });
 
 initCards();
-enableValidation(validationConfig);
+/* enableValidation(validationConfig); */
+
+const formList = Array.from(document.querySelectorAll(validationConfig.formSelector));
+formList.forEach((formEl) => {
+  const validator = new FormValidator(validationConfig, formEl);
+  validator.enableValidation();
+});
