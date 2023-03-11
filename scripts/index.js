@@ -114,7 +114,8 @@ function handleAddCardSubmit(event) {
   addCard();
   addCardForm.reset();
   closePopup(addCardPopup);
-  toggleButtonState(addCardForm, validationConfig);
+  const validator = new FormValidator(validationConfig, addCardForm);
+  validator.toggleButtonState();
 };
 
 function addCard() {
