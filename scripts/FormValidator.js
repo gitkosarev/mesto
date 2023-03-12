@@ -2,21 +2,38 @@ export default class FormValidator {
   constructor(config, formEl) {
       this._config = config;
       this._formEl = formEl;
+      this._buttonEl = this._formEl.querySelector(this._config.submitButtonSelector);
+      this._inputList = Array.from(this._formEl.querySelectorAll(this._config.inputSelector));
   }
 
   enableValidation() {
     this._setEventListeners();
-    this.toggleButtonState();
+    this._toggleButtonState();
+  };
+
+  resetValidation() {
+    this._toggleButtonState();
+    this._inputList.forEach((item) => {
+      this._hideInputError(item);
+    });
   };
   
-  toggleButtonState() {
-    const buttonEl = this._formEl.querySelector(this._config.submitButtonSelector);
+  _setEventListeners() {
+    this._inputList.forEach((inputEl) => {
+      inputEl.addEventListener('input', () => {
+        this._checkValidity(inputEl);
+        this._toggleButtonState();
+      });
+    });
+  };
+  
+  _toggleButtonState() {
     if (this._formEl.checkValidity()) {
-      buttonEl.classList.remove(this._config.inactiveButtonClass);
-      buttonEl.disabled = false;
+      this._buttonEl.classList.remove(this._config.inactiveButtonClass);
+      this._buttonEl.disabled = false;
     } else {
-      buttonEl.classList.add(this._config.inactiveButtonClass);
-      buttonEl.disabled = true;
+      this._buttonEl.classList.add(this._config.inactiveButtonClass);
+      this._buttonEl.disabled = true;
     }
   };
 
@@ -40,15 +57,5 @@ export default class FormValidator {
     } else {
       this._hideInputError(inputEl);
     }
-  };
-  
-  _setEventListeners() {
-    const inputList = Array.from(this._formEl.querySelectorAll(this._config.inputSelector));
-    inputList.forEach((inputEl) => {
-      inputEl.addEventListener('input', () => {
-        this._checkValidity(inputEl);
-        this.toggleButtonState();
-      });
-    });
   };
 }
