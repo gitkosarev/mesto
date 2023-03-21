@@ -1,7 +1,10 @@
 import { initialCards } from "./utility.js";
 import Card from "./Card.js";
 import FormValidator from "./FormValidator.js";
+import Section from "./Section.js";
 
+
+const cardsSelector = '.cards';
 
 const validationConfig = {
   formSelector: '.popup__form',
@@ -19,6 +22,7 @@ const openImagePopup = document.querySelector('#openImagePopup');
 const popupImageEl = openImagePopup.querySelector('.popup__image');
 const popupImageCaptionEl = openImagePopup.querySelector('.popup__caption');
 
+
 const popupList = Array.from(document .querySelectorAll('.popup')),
   editProfileButton = document.querySelector('.profile__edit-button'),
   editProfileForm = document.querySelector('#editProfileForm'),
@@ -28,7 +32,7 @@ const popupList = Array.from(document .querySelectorAll('.popup')),
   addCardForm = document.querySelector('#addCardForm'),
   addCardFormInputName = addCardForm.querySelector('.popup__input_value_name'),
   addCardFormInputDescription = addCardForm.querySelector('.popup__input_value_description'),
-  cardsSection = document.querySelector('.cards'),
+  cardsSection = document.querySelector(cardsSelector),
   profileName = document.querySelector('.profile__name'),
   profileDescription = document.querySelector('.profile__description'),
   editProfilePopup = document.querySelector('#editProfilePopup'),
@@ -42,12 +46,12 @@ function createCardElement(cardConfig) {
 
 function appendCard(cardConfig) {
   const cardElement = createCardElement(cardConfig);
-  cardsSection.appendChild(cardElement);
+  section.addItem(cardElement);
 };
 
 function prependCard(cardConfig) {
   const cardElement = createCardElement(cardConfig);
-  cardsSection.prepend(cardElement);
+  section.prependItem(cardElement);
 };
 
 function handleImageClick(cardConfig) {
@@ -137,9 +141,17 @@ popupList.forEach((popup) => {
   });
 });
 
+
+const section = new Section({
+  items: initialCards,
+  renderer: (cardConfig) => {
+    appendCard(cardConfig);
+  }
+}, cardsSelector);
+
 function initCards() {
   if ('content' in document.createElement('template')) {
-    initialCards.forEach(appendCard);
+    section.renderItems();
   }
 };
 
