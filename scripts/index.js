@@ -3,6 +3,7 @@ import Card from "./Card.js";
 import FormValidator from "./FormValidator.js";
 import Section from "./Section.js";
 import Popup from "./Popup.js";
+import PopupWithImage from "./PopupWithImage.js";
 
 
 const cardsSelector = '.cards',
@@ -28,8 +29,8 @@ addCardPopup.setEventListeners();
 const editProfilePopup = new Popup(editProfilePopupSelector);
 editProfilePopup.setEventListeners();
 
-const openImagePopupClass = new Popup(openImagePopupSelector);
-openImagePopupClass.setEventListeners();
+const openImagePopup = new PopupWithImage(openImagePopupSelector);
+openImagePopup.setEventListeners();
 
 
 const /* popupList = Array.from(document .querySelectorAll('.popup')), */
@@ -42,16 +43,16 @@ const /* popupList = Array.from(document .querySelectorAll('.popup')), */
   addCardFormInputName = addCardForm.querySelector('.popup__input_value_name'),
   addCardFormInputDescription = addCardForm.querySelector('.popup__input_value_description'),
   profileName = document.querySelector('.profile__name'),
-  profileDescription = document.querySelector('.profile__description'),
+  profileDescription = document.querySelector('.profile__description')/* ,
   openImagePopup = document.querySelector(openImagePopupSelector),
   popupImageEl = openImagePopup.querySelector('.popup__image'),
-  popupImageCaptionEl = openImagePopup.querySelector('.popup__caption')/* ,
+  popupImageCaptionEl = openImagePopup.querySelector('.popup__caption'),
   editProfilePopup = document.querySelector(editProfilePopupSelector),
   addCardPopup = document.querySelector(addCardPopupSelector) */;
 
 
 function createCardElement(cardConfig) {
-  const card = new Card(cardConfig, cardTemplateSelector, handleImageClick);
+  const card = new Card(cardConfig, cardTemplateSelector, openImagePopup.open.bind(openImagePopup));
   return card.create();
 };
 
@@ -65,30 +66,30 @@ function prependCard(cardConfig) {
   section.prependItem(cardElement);
 };
 
-function openPopup(popupEl) {
-  popupEl.classList.add('popup_opened');
-  document.addEventListener('keydown', handleKeydown);
-};
-
-function closePopup(popupEl) {
-  popupEl.classList.remove('popup_opened');
-  document.removeEventListener('keydown', handleKeydown);
-};
-
-function handleImageClick(cardConfig) {
+/* function handleImageClick(cardConfig) {
   popupImageEl.src = cardConfig.link;
   popupImageEl.alt = cardConfig.alt;
   popupImageCaptionEl.textContent = cardConfig.name;
-  /* openPopup(openImagePopup); */
-  openImagePopupClass.open();
-};
+  openPopup(openImagePopup);
+  openImagePopup.open(cardConfig);
+}; */
 
-function handleKeydown(event) {
+/* function openPopup(popupEl) {
+  popupEl.classList.add('popup_opened');
+  document.addEventListener('keydown', handleKeydown);
+}; */
+
+/* function closePopup(popupEl) {
+  popupEl.classList.remove('popup_opened');
+  document.removeEventListener('keydown', handleKeydown);
+}; */
+
+/* function handleKeydown(event) {
   if (event.key === 'Escape') {
     const openedPopup = document.querySelector('.popup_opened');
     closePopup(openedPopup);
   }
-};
+}; */
 
 function handleProfileSubmit(event) {
   event.preventDefault();
