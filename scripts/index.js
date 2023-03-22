@@ -1,4 +1,5 @@
 import { initialCards } from "./utility.js";
+import UserInfo from "./UserInfo.js";
 import Card from "./Card.js";
 import FormValidator from "./FormValidator.js";
 import Section from "./Section.js";
@@ -11,7 +12,9 @@ const
   cardTemplateSelector = '#cardTemplate',
   addCardPopupSelector = '#addCardPopup',
   editProfilePopupSelector = '#editProfilePopup',
-  openImagePopupSelector = '#openImagePopup';
+  openImagePopupSelector = '#openImagePopup',
+  profileNameSelector = '.profile__name',
+  profileDescriptionSelector = '.profile__description';
 
 const validationConfig = {
   formSelector: '.popup__form',
@@ -24,6 +27,8 @@ const validationConfig = {
 const formValidators = {};
 const formList = Array.from(document.querySelectorAll(validationConfig.formSelector));
 
+const userInfo = new UserInfo({ nameSelector: profileNameSelector, descriptionSelector: profileDescriptionSelector });
+
 const addCardPopup = new PopupWithForm(addCardPopupSelector, handleAddCardSubmit);
 addCardPopup.setEventListeners();
 
@@ -34,7 +39,8 @@ const openImagePopup = new PopupWithImage(openImagePopupSelector);
 openImagePopup.setEventListeners();
 
 
-const /* popupList = Array.from(document .querySelectorAll('.popup')), */
+const 
+  /* popupList = Array.from(document .querySelectorAll('.popup')), */
   editProfileButton = document.querySelector('.profile__edit-button'),
   editProfileForm = document.querySelector('#editProfileForm'),
   editProfileFormInputName = editProfileForm.querySelector('.popup__input_value_name'),
@@ -42,9 +48,9 @@ const /* popupList = Array.from(document .querySelectorAll('.popup')), */
   addCardButtonEl = document.querySelector('.profile__add-button'),
   addCardForm = document.querySelector('#addCardForm'),
   addCardFormInputName = addCardForm.querySelector('.popup__input_value_name'),
-  addCardFormInputDescription = addCardForm.querySelector('.popup__input_value_description'),
-  profileName = document.querySelector('.profile__name'),
-  profileDescription = document.querySelector('.profile__description')/* ,
+  addCardFormInputDescription = addCardForm.querySelector('.popup__input_value_description')/* ,
+  profileName = document.querySelector(profileNameSelector),
+  profileDescription = document.querySelector(profileDescriptionSelector),
   openImagePopup = document.querySelector(openImagePopupSelector),
   popupImageEl = openImagePopup.querySelector('.popup__image'),
   popupImageCaptionEl = openImagePopup.querySelector('.popup__caption'),
@@ -65,6 +71,36 @@ function appendCard(cardConfig) {
 function prependCard(cardConfig) {
   const cardElement = createCardElement(cardConfig);
   section.prependItem(cardElement);
+};
+
+function handleProfileSubmit(inputValues) {
+  /* event.preventDefault();
+  editProfile(); */
+  /* closePopup(editProfilePopup); */
+  userInfo.setUserInfo(inputValues);
+  editProfilePopup.close();
+};
+
+function handleAddCardSubmit(inputValues) {
+  /* event.preventDefault(); */
+  addCard();
+  //addCardForm.reset();
+  resetValidation(addCardForm);
+  /* closePopup(addCardPopup); */
+  addCardPopup.close();
+};
+
+function resetValidation(formEl) {
+  formValidators[formEl.getAttribute('name')].resetValidation();
+};
+
+function addCard() {
+  const config = {
+    name: addCardFormInputName.value,
+    link: addCardFormInputDescription.value,
+    alt: `фото ${addCardFormInputName.value}`
+  };
+  prependCard(config);
 };
 
 /* function handleImageClick(cardConfig) {
@@ -92,47 +128,19 @@ function prependCard(cardConfig) {
   }
 }; */
 
-function handleProfileSubmit(event) {
-  event.preventDefault();
-  editProfile();
-  /* closePopup(editProfilePopup); */
-  editProfilePopup.close();
-};
-
-function editProfile() {
+/* function editProfile() {
   profileName.textContent = editProfileFormInputName.value;
   profileDescription.textContent = editProfileFormInputDescription.value;
-};
+}; */
 
-function handleAddCardSubmit(event) {
-  event.preventDefault();
-  addCard();
-  //addCardForm.reset();
-  resetValidation(addCardForm);
-  /* closePopup(addCardPopup); */
-  addCardPopup.close();
-};
-
-function resetValidation(formEl) {
-  formValidators[formEl.getAttribute('name')].resetValidation();
-};
-
-function addCard() {
-  const config = {
-    name: addCardFormInputName.value,
-    link: addCardFormInputDescription.value,
-    alt: `фото ${addCardFormInputName.value}`
-  };
-  prependCard(config);
-};
-
-function fillProfile() {
-  editProfileFormInputName.value = profileName.textContent;
-  editProfileFormInputDescription.value = profileDescription.textContent;
+function fillProfileForm(userData) {
+  editProfileFormInputName.value = userData.name;
+  editProfileFormInputDescription.value = userData.description;
 };
 
 function handleEditProfileClick() {
-  fillProfile();
+  const userData = userInfo.getUserInfo();
+  fillProfileForm(userData);
   /* openPopup(editProfilePopup); */
   editProfilePopup.open();
 };
