@@ -1,32 +1,39 @@
+import altai from '../images/cards/altai.jpg';
+import kamchatka from '../images/cards/kamchatka.jpg';
+import baikal from '../images/cards/baikal.jpg';
+import dombai from '../images/cards/dombai.png';
+import elbrus from '../images/cards/elbrus.png';
+import alps from '../images/cards/alps.jpg';
+
 export const initialCards = [
   {
     name: 'Алтай',
-    link: './images/cards/altai.jpg',
+    link: altai,
     alt: 'фото Алтай'
   },
   {
     name: 'Камчатка',
-    link: './images/cards/kamchatka.jpg',
+    link: kamchatka,
     alt: 'фото Камчатка'
   },
   {
     name: 'Байкал',
-    link: './images/cards/baikal.jpg',
+    link: baikal,
     alt: 'фото Байкал'
   },
   {
     name: 'Домбай',
-    link: './images/cards/dombai.png',
+    link: dombai,
     alt: 'фото Домбай'
   },
   {
     name: 'Эльбрус',
-    link: './images/cards/elbrus.png',
+    link: elbrus,
     alt: 'фото Эльбрус'
   },
   {
     name: 'Альпы',
-    link: './images/cards/alps.jpg',
+    link: alps,
     alt: 'фото Альпы'
   }
 ];
