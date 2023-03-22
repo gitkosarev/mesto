@@ -6,6 +6,8 @@ import Section from "./Section.js";
 import PopupWithForm from "./PopupWithForm.js";
 import PopupWithImage from "./PopupWithImage.js";
 
+import '../pages/index.css';
+
 
 const
   cardsSelector = '.cards',
