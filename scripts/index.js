@@ -6,7 +6,10 @@ import Popup from "./Popup.js";
 
 
 const cardsSelector = '.cards',
-  addCardPopupSelector = '#addCardPopup';
+  cardTemplateSelector = '#cardTemplate',
+  addCardPopupSelector = '#addCardPopup',
+  editProfilePopupSelector = '#editProfilePopup',
+  openImagePopupSelector = '#openImagePopup';
 
 const validationConfig = {
   formSelector: '.popup__form',
@@ -22,13 +25,14 @@ const formList = Array.from(document.querySelectorAll(validationConfig.formSelec
 const addCardPopup = new Popup(addCardPopupSelector);
 addCardPopup.setEventListeners();
 
-const cardTemplateSelector = '#cardTemplate';
-const openImagePopup = document.querySelector('#openImagePopup');
-const popupImageEl = openImagePopup.querySelector('.popup__image');
-const popupImageCaptionEl = openImagePopup.querySelector('.popup__caption');
+const editProfilePopup = new Popup(editProfilePopupSelector);
+editProfilePopup.setEventListeners();
+
+const openImagePopupClass = new Popup(openImagePopupSelector);
+openImagePopupClass.setEventListeners();
 
 
-const popupList = Array.from(document .querySelectorAll('.popup')),
+const /* popupList = Array.from(document .querySelectorAll('.popup')), */
   editProfileButton = document.querySelector('.profile__edit-button'),
   editProfileForm = document.querySelector('#editProfileForm'),
   editProfileFormInputName = editProfileForm.querySelector('.popup__input_value_name'),
@@ -39,7 +43,10 @@ const popupList = Array.from(document .querySelectorAll('.popup')),
   addCardFormInputDescription = addCardForm.querySelector('.popup__input_value_description'),
   profileName = document.querySelector('.profile__name'),
   profileDescription = document.querySelector('.profile__description'),
-  editProfilePopup = document.querySelector('#editProfilePopup')/* ,
+  openImagePopup = document.querySelector(openImagePopupSelector),
+  popupImageEl = openImagePopup.querySelector('.popup__image'),
+  popupImageCaptionEl = openImagePopup.querySelector('.popup__caption')/* ,
+  editProfilePopup = document.querySelector(editProfilePopupSelector),
   addCardPopup = document.querySelector(addCardPopupSelector) */;
 
 
@@ -72,7 +79,8 @@ function handleImageClick(cardConfig) {
   popupImageEl.src = cardConfig.link;
   popupImageEl.alt = cardConfig.alt;
   popupImageCaptionEl.textContent = cardConfig.name;
-  openPopup(openImagePopup);
+  /* openPopup(openImagePopup); */
+  openImagePopupClass.open();
 };
 
 function handleKeydown(event) {
@@ -85,7 +93,8 @@ function handleKeydown(event) {
 function handleProfileSubmit(event) {
   event.preventDefault();
   editProfile();
-  closePopup(editProfilePopup);
+  /* closePopup(editProfilePopup); */
+  editProfilePopup.close();
 };
 
 function editProfile() {
@@ -122,7 +131,8 @@ function fillProfile() {
 
 function handleEditProfileClick() {
   fillProfile();
-  openPopup(editProfilePopup);
+  /* openPopup(editProfilePopup); */
+  editProfilePopup.open();
 };
 
 function handleAddCardClick() {
