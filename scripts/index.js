@@ -2,11 +2,12 @@ import { initialCards } from "./utility.js";
 import Card from "./Card.js";
 import FormValidator from "./FormValidator.js";
 import Section from "./Section.js";
-import Popup from "./Popup.js";
+import PopupWithForm from "./PopupWithForm.js";
 import PopupWithImage from "./PopupWithImage.js";
 
 
-const cardsSelector = '.cards',
+const
+  cardsSelector = '.cards',
   cardTemplateSelector = '#cardTemplate',
   addCardPopupSelector = '#addCardPopup',
   editProfilePopupSelector = '#editProfilePopup',
@@ -23,10 +24,10 @@ const validationConfig = {
 const formValidators = {};
 const formList = Array.from(document.querySelectorAll(validationConfig.formSelector));
 
-const addCardPopup = new Popup(addCardPopupSelector);
+const addCardPopup = new PopupWithForm(addCardPopupSelector, handleAddCardSubmit);
 addCardPopup.setEventListeners();
 
-const editProfilePopup = new Popup(editProfilePopupSelector);
+const editProfilePopup = new PopupWithForm(editProfilePopupSelector, handleProfileSubmit);
 editProfilePopup.setEventListeners();
 
 const openImagePopup = new PopupWithImage(openImagePopupSelector);
@@ -106,7 +107,7 @@ function editProfile() {
 function handleAddCardSubmit(event) {
   event.preventDefault();
   addCard();
-  addCardForm.reset();
+  //addCardForm.reset();
   resetValidation(addCardForm);
   /* closePopup(addCardPopup); */
   addCardPopup.close();
@@ -142,10 +143,11 @@ function handleAddCardClick() {
 };
 
 editProfileButton.addEventListener('click', handleEditProfileClick);
-editProfileForm.addEventListener('submit', handleProfileSubmit);
-
 addCardButtonEl.addEventListener('click', handleAddCardClick);
-addCardForm.addEventListener('submit', handleAddCardSubmit);
+
+/* editProfileForm.addEventListener('submit', handleProfileSubmit); */
+
+/* addCardForm.addEventListener('submit', handleAddCardSubmit); */
 
 /*popupList.forEach((popup) => {
   popup.addEventListener('mousedown', (event) => {
