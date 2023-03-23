@@ -29,12 +29,20 @@ export default class FormValidator {
   
   _toggleButtonState() {
     if (this._formEl.checkValidity()) {
-      this._buttonEl.classList.remove(this._config.inactiveButtonClass);
-      this._buttonEl.disabled = false;
+      this._enableSubmitButton();
     } else {
-      this._buttonEl.classList.add(this._config.inactiveButtonClass);
-      this._buttonEl.disabled = true;
+      this._disableSubmitButton();
     }
+  };
+
+  _enableSubmitButton() {
+    this._buttonEl.classList.remove(this._config.inactiveButtonClass);
+    this._buttonEl.disabled = false;
+  };
+
+  _disableSubmitButton() {
+    this._buttonEl.classList.add(this._config.inactiveButtonClass);
+    this._buttonEl.disabled = true;
   };
 
   _showInputError(inputEl, errorMessage) {

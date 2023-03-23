@@ -1,12 +1,12 @@
-import { initialCards } from "./utility.js";
-import UserInfo from "./UserInfo.js";
-import Card from "./Card.js";
-import FormValidator from "./FormValidator.js";
-import Section from "./Section.js";
-import PopupWithForm from "./PopupWithForm.js";
-import PopupWithImage from "./PopupWithImage.js";
+import { initialCards } from "../components/utility.js";
+import UserInfo from "../components/UserInfo.js";
+import Card from "../components/Card.js";
+import FormValidator from "../components/FormValidator.js";
+import Section from "../components/Section.js";
+import PopupWithForm from "../components/PopupWithForm.js";
+import PopupWithImage from "../components/PopupWithImage.js";
 
-import '../pages/index.css';
+import './index.css';
 
 
 const
@@ -71,9 +71,8 @@ function handleProfileSubmit(inputValues) {
 };
 
 function handleAddCardSubmit(inputValues) {
-  addCard(inputValues);
-  resetValidation(addCardForm);
   addCardPopup.close();
+  addCard(inputValues);
 };
 
 function addCard(inputValues) {
@@ -85,9 +84,9 @@ function addCard(inputValues) {
   prependCard(config);
 };
 
-function resetValidation(formEl) {
+/* function resetValidation(formEl) {
   formValidators[formEl.getAttribute('name')].resetValidation();
-};
+}; */
 
 function fillProfileForm(userData) {
   editProfileFormInputName.value = userData.name;
@@ -101,6 +100,7 @@ function handleEditProfileClick() {
 };
 
 function handleAddCardClick() {
+  formValidators[addCardForm.getAttribute('name')].resetValidation();
   addCardPopup.open();
 };
 
@@ -120,7 +120,7 @@ function initCards() {
   }
 };
 
-function enableValidation() {
+function initValidation() {
   formList.forEach((formEl) => {
     const validator = new FormValidator(validationConfig, formEl);
     const formName = formEl.getAttribute('name');
@@ -131,4 +131,4 @@ function enableValidation() {
 
 
 initCards();
-enableValidation();
+initValidation();
