@@ -41,6 +41,6 @@
 * [Коллекция бесплатных фотографий](https://unsplash.com/)
 
 #### Проект на стадии разработки и доступен по адресу:
-[Место](https://gitkosarev.github.io/mesto/index.html)
+[Место](https://gitkosarev.github.io/mesto/)
 
 ![Jacques Cousteau](https://esquire.kz/wp-content/uploads/2019/06/e5d59868-71df-4389-bb85-9ba52baa934a.jpeg)
