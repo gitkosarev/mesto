@@ -39,6 +39,7 @@ export const initialCards = [
 ];
 
 export const credential = {
-  cohort: cohort-62,
-  pass: "09d5475f-e954-4f6d-9cca-0bea06143685"
+  baseUrl: "https://mesto.nomoreparties.co/",
+  cohort: "cohort-62",
+  token: "09d5475f-e954-4f6d-9cca-0bea06143685"
 };

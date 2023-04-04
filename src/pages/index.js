@@ -1,4 +1,5 @@
-import { initialCards } from "../components/utility.js";
+import { initialCards, credential } from "../components/utility.js";
+import Api from "../components/Api.js";
 import UserInfo from "../components/UserInfo.js";
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
@@ -129,6 +130,19 @@ function initValidation() {
   });
 };
 
+function initUserInfo() {
+  const userApi = new Api(`${credential.baseUrl}v1/${credential.cohort}/users/me`, credential.token);
+  userApi.getUserInfo()
+    .then((result) => {
+      userInfo.setUserInfo({ name: result.name, description: result.about});
+    })
+    .catch((error) => {
+      console.error(`Error while getting UserInfo. Response status: ${error.status}`);
+      userInfo.setUserInfo({ name: "undefined", description: "undefined"});
+    });
+};
 
+
+initUserInfo();
 initCards();
 initValidation();
