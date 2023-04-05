@@ -32,9 +32,9 @@ export default class Api {
       .then(response => {
         if (response.ok) {
           return response.json();
+        } else {
+          return Promise.reject(response);
         }
-        
-        return Promise.reject(`Error: ${response.status}`);
       });
   };
 

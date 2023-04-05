@@ -1,4 +1,4 @@
-import { initialCards, credential } from "../components/utility.js";
+import { credential } from "../components/utility.js";
 import Api from "../components/Api.js";
 import UserInfo from "../components/UserInfo.js";
 import Card from "../components/Card.js";
@@ -36,6 +36,8 @@ const userInfo = new UserInfo({
   descriptionSelector: profileDescriptionSelector,
   avatarSelector: avatarSelector
 });
+
+let section;
 
 const addCardPopup = new PopupWithForm(addCardPopupSelector, handleAddCardSubmit);
 addCardPopup.setEventListeners();
@@ -113,16 +115,26 @@ function handleAddCardClick() {
 editProfileButton.addEventListener('click', handleEditProfileClick);
 addCardButtonEl.addEventListener('click', handleAddCardClick);
 
-const section = new Section({
-  items: initialCards,
-  renderer: (cardConfig) => {
-    appendCard(cardConfig);
-  }
-}, cardsSelector);
-
 function initCards() {
   if ('content' in document.createElement('template')) {
-    section.renderItems();
+    const cardsApi = new Api(`${credential.baseUrl}v1/${credential.cohort}/cards`, credential.token);
+    cardsApi.getInitialCards()
+      .then((result) => {
+        const cardsArray = result.map(function(item) {
+          item.alt = `фото ${item.name}`;
+          return item;
+        });
+        section = new Section({
+          items: cardsArray,
+          renderer: (cardConfig) => {
+            appendCard(cardConfig);
+          }
+        }, cardsSelector);
+        section.renderItems();
+      })
+      .catch((error) => {
+        console.error(`Error while getting cards from server. Response status: ${error.status}`);
+      });
   }
 };
 
@@ -141,6 +153,7 @@ function initUserInfo() {
     .then((result) => {
       userInfo.setUserInfo({ name: result.name, description: result.about });
       userInfo.setUserAvatar(result.avatar);
+      console.log(`your id: ${result._id}`);
     })
     .catch((error) => {
       console.error(`Error while getting user info. Response status: ${error.status}`);
