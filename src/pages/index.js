@@ -71,6 +71,16 @@ function appendCard(cardConfig) {
 function prependCard(cardConfig) {
   const cardElement = createCardElement(cardConfig);
   section.prependItem(cardElement);
+
+  const api = new Api(`${credential.baseUrl}v1/${credential.cohort}/cards`, credential.token);
+  api.saveCard(cardConfig.name, cardConfig.link)
+    .then((result) => {
+      console.log(`Card successfully saved. id: ${result._id}`);
+    })
+    .catch((error) => {
+      console.error(`Error while saving card. Response status: ${error.status}`);
+    });
+
 };
 
 function handleProfileSubmit(inputValues) {

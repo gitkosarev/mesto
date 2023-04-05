@@ -46,8 +46,29 @@ export default class Api {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        name: name,
-        about: about
+        name,
+        about
+      })
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject(response);
+        }
+      });
+  };
+
+  saveCard(name, link) {
+    return fetch(this._url, {
+      method: "POST",
+      headers: {
+        authorization: this._token,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name,
+        link
       })
     })
       .then(response => {
