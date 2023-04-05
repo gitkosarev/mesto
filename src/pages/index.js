@@ -76,6 +76,14 @@ function prependCard(cardConfig) {
 function handleProfileSubmit(inputValues) {
   userInfo.setUserInfo(inputValues);
   editProfilePopup.close();
+  const api = new Api(`${credential.baseUrl}v1/${credential.cohort}/users/me`, credential.token);
+  api.updateProfile(inputValues.name, inputValues.description)
+    .then((result) => {
+      console.log(`Profile successfully updated for user with id: ${result._id}`);
+    })
+    .catch((error) => {
+      console.error(`Error while updating profile. Response status: ${error.status}`);
+    });
 };
 
 function handleAddCardSubmit(inputValues) {
