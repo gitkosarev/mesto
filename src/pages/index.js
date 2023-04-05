@@ -16,6 +16,7 @@ const
   addCardPopupSelector = '#addCardPopup',
   editProfilePopupSelector = '#editProfilePopup',
   openImagePopupSelector = '#openImagePopup',
+  avatarSelector = '.profile__avatar',
   profileNameSelector = '.profile__name',
   profileDescriptionSelector = '.profile__description';
 
@@ -30,7 +31,11 @@ const validationConfig = {
 const formValidators = {};
 const formList = Array.from(document.querySelectorAll(validationConfig.formSelector));
 
-const userInfo = new UserInfo({ nameSelector: profileNameSelector, descriptionSelector: profileDescriptionSelector });
+const userInfo = new UserInfo({
+  nameSelector: profileNameSelector,
+  descriptionSelector: profileDescriptionSelector,
+  avatarSelector: avatarSelector
+});
 
 const addCardPopup = new PopupWithForm(addCardPopupSelector, handleAddCardSubmit);
 addCardPopup.setEventListeners();
@@ -134,10 +139,11 @@ function initUserInfo() {
   const userApi = new Api(`${credential.baseUrl}v1/${credential.cohort}/users/me`, credential.token);
   userApi.getUserInfo()
     .then((result) => {
-      userInfo.setUserInfo({ name: result.name, description: result.about});
+      userInfo.setUserInfo({ name: result.name, description: result.about });
+      userInfo.setUserAvatar(result.avatar);
     })
     .catch((error) => {
-      console.error(`Error while getting UserInfo. Response status: ${error.status}`);
+      console.error(`Error while getting user info. Response status: ${error.status}`);
       userInfo.setUserInfo({ name: "undefined", description: "undefined"});
     });
 };
