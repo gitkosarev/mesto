@@ -5,6 +5,7 @@ export default class Card {
       this._handleImageClick = handleImageClick;
       this._clone = document.querySelector(this._templateSelector).content.cloneNode(true);
       this._imageEl = this._clone.querySelector('.card__image');
+      this._likeCounterEl = this._clone.querySelector('.card__like-counter');
   }
 
   create() {
@@ -17,6 +18,7 @@ export default class Card {
     this._clone.querySelector('.card__title').textContent = this._data.name;
     this._imageEl.src = this._data.link;
     this._imageEl.alt = this._data.alt;
+    this._likeCounterEl.textContent = this._data.likes.length
   };
 
   _setEventListeners() {
