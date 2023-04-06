@@ -6,6 +6,8 @@ export default class Card {
     this._handleRemoval = handleRemoval;
     this._clone = document.querySelector(this._templateSelector).content.cloneNode(true);
     this._imageEl = this._clone.querySelector('.card__image');
+    this._likeButton = this._clone.querySelector('.card__like-button');
+    this._trashButtonEl = this._clone.querySelector('.card__trash-button');
     this._likeCounterEl = this._clone.querySelector('.card__like-counter');
   }
 
@@ -19,15 +21,19 @@ export default class Card {
     this._clone.querySelector('.card__title').textContent = this._data.name;
     this._imageEl.src = this._data.link;
     this._imageEl.alt = this._data.alt;
-    this._likeCounterEl.textContent = this._data.likes.length
+    this._likeCounterEl.textContent = this._data.likes ? this._data.likes.length : 0;
   };
 
   _setEventListeners() {
     this._imageEl.addEventListener('click', () => {
       this._handleImageClick(this._data);
     });
-    this._clone.querySelector('.card__like-button').addEventListener('click', this._handleLikeClick);
-    this._clone.querySelector('.card__trash-button').addEventListener('click', this._handleTrashClick.bind(this));
+    this._likeButton.addEventListener('click', this._handleLikeClick);
+    if (this._data.isOwner) {
+      this._trashButtonEl.addEventListener('click', this._handleTrashClick.bind(this));
+    } else {
+      this._trashButtonEl.remove();
+    }
   };
 
   _handleLikeClick(event) {
@@ -36,12 +42,14 @@ export default class Card {
   };
   
   _handleTrashClick(event) {
-    this._handleRemoval(function (isConfirmed) {
-      if (isConfirmed) {
+    this._handleRemoval(
+      this._data._id,
+      function () {
         const buttonEl = event.target;
         this._removeCard(buttonEl);
-      }
-    }, this);
+      },
+      this
+    );
   };
   
   _removeCard(buttonEl) {

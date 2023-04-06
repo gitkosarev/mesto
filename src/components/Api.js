@@ -80,4 +80,21 @@ export default class Api {
       });
   };
 
+  deleteCard() {
+    return fetch(this._url, {
+      method: "DELETE",
+      headers: {
+        authorization: this._token,
+        "Content-Type": "application/json"
+      }
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject(response);
+        }
+      });
+  };
+
 }

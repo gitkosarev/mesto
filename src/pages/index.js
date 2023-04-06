@@ -33,6 +33,17 @@ const validationConfig = {
 const formValidators = {};
 const formList = Array.from(document.querySelectorAll(validationConfig.formSelector));
 
+function initValidation() {
+  formList.forEach((formEl) => {
+    const validator = new FormValidator(validationConfig, formEl);
+    const formName = formEl.getAttribute('name');
+    formValidators[formName] = validator;
+    validator.enableValidation();
+  });
+};
+
+initValidation();
+
 const userInfo = new UserInfo({
   nameSelector: profileNameSelector,
   descriptionSelector: profileDescriptionSelector,
@@ -63,8 +74,18 @@ const
   editProfileFormInputDescription = editProfileForm.querySelector('.popup__input_value_description');
 
 
-function handleCardRemoval(callback, scope) {
-  confirmRemovalPopup.open(callback.bind(scope));
+function handleCardRemoval(cardId, callback, scope) {
+  confirmRemovalPopup.open(function() {
+    callback.bind(scope)();
+    const api = new Api(`${credential.baseUrl}v1/${credential.cohort}/cards/${cardId}`, credential.token);
+    api.deleteCard()
+      .then((result) => {
+        console.log(`Photo successfully deleted. Id: ${cardId}. Result: ${result.message}`);
+      })
+      .catch((error) => {
+        console.error(`Error while deleting photo. Response status: ${error.status}`);
+      });
+  });
 };
 
 function createCardElement(cardConfig) {
@@ -73,17 +94,18 @@ function createCardElement(cardConfig) {
 };
 
 function appendCard(cardConfig) {
+  cardConfig.isOwner = cardConfig.owner && cardConfig.owner._id && cardConfig.owner._id === userInfo.userId;
   const cardElement = createCardElement(cardConfig);
   section.addItem(cardElement);
 };
 
 function prependCard(cardConfig) {
-  const cardElement = createCardElement(cardConfig);
-  section.prependItem(cardElement);
-
   const api = new Api(`${credential.baseUrl}v1/${credential.cohort}/cards`, credential.token);
   api.saveCard(cardConfig.name, cardConfig.link)
     .then((result) => {
+      result.isOwner = true;
+      const cardElement = createCardElement(result);
+      section.prependItem(cardElement);
       console.log(`Photo successfully saved. id: ${result._id}`);
     })
     .catch((error) => {
@@ -119,10 +141,6 @@ function addCard(inputValues) {
   prependCard(config);
 };
 
-/* function resetValidation(formEl) {
-  formValidators[formEl.getAttribute('name')].resetValidation();
-}; */
-
 function fillProfileForm(userData) {
   editProfileFormInputName.value = userData.name;
   editProfileFormInputDescription.value = userData.description;
@@ -142,53 +160,41 @@ function handleAddCardClick() {
 editProfileButton.addEventListener('click', handleEditProfileClick);
 addCardButtonEl.addEventListener('click', handleAddCardClick);
 
-function initCards() {
+
+function initUserInfo(result) {
+  userInfo.userId = result._id;
+  userInfo.setUserInfo({ name: result.name, description: result.about });
+  userInfo.setUserAvatar(result.avatar);
+  console.log(`your id: ${result._id}`);
+};
+
+function initCards(result) {
   if ('content' in document.createElement('template')) {
-    const cardsApi = new Api(`${credential.baseUrl}v1/${credential.cohort}/cards`, credential.token);
-    cardsApi.getInitialCards()
-      .then((result) => {
-        const cardsArray = result.map(function(item) {
-          item.alt = `фото ${item.name}`;
-          return item;
-        });
-        section = new Section({
-          items: cardsArray,
-          renderer: (cardConfig) => {
-            appendCard(cardConfig);
-          }
-        }, cardsSelector);
-        section.renderItems();
-      })
-      .catch((error) => {
-        console.error(`Error while getting cards from server. Response status: ${error.status}`);
-      });
+    const cardsArray = result.map(function(item) {
+      item.alt = `фото ${item.name}`;
+      return item;
+    });
+    section = new Section({
+      items: cardsArray,
+      renderer: (cardConfig) => {
+        appendCard(cardConfig);
+      }
+    }, cardsSelector);
+    section.renderItems();
   }
 };
 
-function initValidation() {
-  formList.forEach((formEl) => {
-    const validator = new FormValidator(validationConfig, formEl);
-    const formName = formEl.getAttribute('name');
-    formValidators[formName] = validator;
-    validator.enableValidation();
-  });
-};
-
-function initUserInfo() {
+function init() {
   const userApi = new Api(`${credential.baseUrl}v1/${credential.cohort}/users/me`, credential.token);
-  userApi.getUserInfo()
-    .then((result) => {
-      userInfo.setUserInfo({ name: result.name, description: result.about });
-      userInfo.setUserAvatar(result.avatar);
-      console.log(`your id: ${result._id}`);
+  const cardsApi = new Api(`${credential.baseUrl}v1/${credential.cohort}/cards`, credential.token);
+  Promise.all([ userApi.getUserInfo(), cardsApi.getInitialCards() ])
+    .then((responses) => {
+      initUserInfo(responses[0]);
+      initCards(responses[1]);
     })
     .catch((error) => {
-      console.error(`Error while getting user info. Response status: ${error.status}`);
-      userInfo.setUserInfo({ name: "undefined", description: "undefined"});
+      console.error(error);
     });
 };
 
-
-initUserInfo();
-initCards();
-initValidation();
+init();
