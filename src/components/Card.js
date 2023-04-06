@@ -1,11 +1,12 @@
 export default class Card {
-  constructor(data, templateSelector, handleImageClick) {
-      this._data = data;
-      this._templateSelector = templateSelector;
-      this._handleImageClick = handleImageClick;
-      this._clone = document.querySelector(this._templateSelector).content.cloneNode(true);
-      this._imageEl = this._clone.querySelector('.card__image');
-      this._likeCounterEl = this._clone.querySelector('.card__like-counter');
+  constructor(data, templateSelector, handleImageClick, handleRemoval) {
+    this._data = data;
+    this._templateSelector = templateSelector;
+    this._handleImageClick = handleImageClick;
+    this._handleRemoval = handleRemoval;
+    this._clone = document.querySelector(this._templateSelector).content.cloneNode(true);
+    this._imageEl = this._clone.querySelector('.card__image');
+    this._likeCounterEl = this._clone.querySelector('.card__like-counter');
   }
 
   create() {
@@ -26,7 +27,7 @@ export default class Card {
       this._handleImageClick(this._data);
     });
     this._clone.querySelector('.card__like-button').addEventListener('click', this._handleLikeClick);
-    this._clone.querySelector('.card__trash-button').addEventListener('click', this._handleTrashClick);
+    this._clone.querySelector('.card__trash-button').addEventListener('click', this._handleTrashClick.bind(this));
   };
 
   _handleLikeClick(event) {
@@ -35,7 +36,15 @@ export default class Card {
   };
   
   _handleTrashClick(event) {
-    const buttonEl = event.target;
+    this._handleRemoval(function (isConfirmed) {
+      if (isConfirmed) {
+        const buttonEl = event.target;
+        this._removeCard(buttonEl);
+      }
+    }, this);
+  };
+  
+  _removeCard(buttonEl) {
     buttonEl.closest('.card').remove();
   };
   

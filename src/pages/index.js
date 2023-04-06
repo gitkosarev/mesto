@@ -6,6 +6,7 @@ import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
+import PopupWIthConfirmation from "../components/PopupWIthConfirmation.js";
 
 import './index.css';
 
@@ -16,6 +17,7 @@ const
   addCardPopupSelector = '#addCardPopup',
   editProfilePopupSelector = '#editProfilePopup',
   openImagePopupSelector = '#openImagePopup',
+  confirmPopupSelector = '#confirmPopup',
   avatarSelector = '.profile__avatar',
   profileNameSelector = '.profile__name',
   profileDescriptionSelector = '.profile__description';
@@ -48,6 +50,9 @@ editProfilePopup.setEventListeners();
 const openImagePopup = new PopupWithImage(openImagePopupSelector);
 openImagePopup.setEventListeners();
 
+const confirmRemovalPopup = new PopupWIthConfirmation(confirmPopupSelector);
+confirmRemovalPopup.setEventListeners();
+
 
 const 
   addCardButtonEl = document.querySelector('.profile__add-button'),
@@ -58,8 +63,12 @@ const
   editProfileFormInputDescription = editProfileForm.querySelector('.popup__input_value_description');
 
 
+function handleCardRemoval(callback, scope) {
+  confirmRemovalPopup.open(callback.bind(scope));
+};
+
 function createCardElement(cardConfig) {
-  const card = new Card(cardConfig, cardTemplateSelector, openImagePopup.open.bind(openImagePopup));
+  const card = new Card(cardConfig, cardTemplateSelector, openImagePopup.open.bind(openImagePopup), handleCardRemoval);
   return card.create();
 };
 
@@ -75,10 +84,10 @@ function prependCard(cardConfig) {
   const api = new Api(`${credential.baseUrl}v1/${credential.cohort}/cards`, credential.token);
   api.saveCard(cardConfig.name, cardConfig.link)
     .then((result) => {
-      console.log(`Card successfully saved. id: ${result._id}`);
+      console.log(`Photo successfully saved. id: ${result._id}`);
     })
     .catch((error) => {
-      console.error(`Error while saving card. Response status: ${error.status}`);
+      console.error(`Error while saving photo. Response status: ${error.status}`);
     });
 
 };
