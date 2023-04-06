@@ -131,4 +131,24 @@ export default class Api {
       });
   };
 
+  updateAvatar(link) {
+    return fetch(this._url, {
+      method: "PATCH",
+      headers: {
+        authorization: this._token,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        avatar: link
+      })
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject(response);
+        }
+      });
+  };
+
 }

@@ -18,6 +18,7 @@ const
   editProfilePopupSelector = '#editProfilePopup',
   openImagePopupSelector = '#openImagePopup',
   confirmPopupSelector = '#confirmPopup',
+  avatarPopupSelector = '#avatarPopup',
   avatarSelector = '.profile__avatar',
   profileNameSelector = '.profile__name',
   profileDescriptionSelector = '.profile__description';
@@ -63,6 +64,11 @@ openImagePopup.setEventListeners();
 
 const confirmRemovalPopup = new PopupWIthConfirmation(confirmPopupSelector);
 confirmRemovalPopup.setEventListeners();
+
+const avatarPopup = new PopupWithForm(avatarPopupSelector, handleAvatarUpdate);
+avatarPopup.setEventListeners();
+/// !!!!!!!!!!!!!!!!!!!!!!!!
+avatarPopup.open();
 
 
 const 
@@ -153,6 +159,20 @@ function handleProfileSubmit(inputValues) {
     })
     .catch((error) => {
       console.error(`Error while updating profile. Response status: ${error.status}`);
+    });
+};
+
+function handleAvatarUpdate(inputValues) {
+  const link = inputValues.description;
+  const api = new Api(`${credential.baseUrl}v1/${credential.cohort}/users/me/avatar`, credential.token);
+  api.updateAvatar(link)
+    .then((result) => {
+      userInfo.setUserAvatar(link);
+      avatarPopup.close();
+      console.log(`Avatar successfully updated for current user with id: ${result._id}`);
+    })
+    .catch((error) => {
+      console.error(`Error while updating avatar. Response status: ${error.status}`);
     });
 };
 
