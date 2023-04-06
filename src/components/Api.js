@@ -97,4 +97,38 @@ export default class Api {
       });
   };
 
+  putLike() {
+    return fetch(this._url, {
+      method: "PUT",
+      headers: {
+        authorization: this._token,
+        "Content-Type": "application/json"
+      }
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject(response);
+        }
+      });
+  };
+
+  deleteLike() {
+    return fetch(this._url, {
+      method: "DELETE",
+      headers: {
+        authorization: this._token,
+        "Content-Type": "application/json"
+      }
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject(response);
+        }
+      });
+  };
+
 }

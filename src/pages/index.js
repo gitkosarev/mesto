@@ -88,8 +88,37 @@ function handleCardRemoval(cardId, callback, scope) {
   });
 };
 
+function handleLikeToggle(isActive, cardId, callback) {
+  const api = new Api(`${credential.baseUrl}v1/${credential.cohort}/cards/${cardId}/likes`, credential.token);
+  if (isActive) {
+    api.putLike()
+      .then((result) => {
+        callback(result);
+        console.log(`Like successfully added. Card id: ${cardId}`);
+      })
+      .catch((error) => {
+        console.error(`Error while adding like. Card id: ${cardId}. Response status: ${error.status}`);
+      });
+  } else {
+    api.deleteLike()
+      .then((result) => {
+        callback(result);
+        console.log(`Like successfully deleted. Card id: ${cardId}`);
+      })
+      .catch((error) => {
+        console.error(`Error while deleting like. Card id: ${cardId}. Response status: ${error.status}`);
+      });
+  }
+};
+
 function createCardElement(cardConfig) {
-  const card = new Card(cardConfig, cardTemplateSelector, openImagePopup.open.bind(openImagePopup), handleCardRemoval);
+  const card = new Card(
+    cardConfig,
+    cardTemplateSelector,
+    openImagePopup.open.bind(openImagePopup),
+    handleCardRemoval,
+    handleLikeToggle
+  );
   return card.create();
 };
 

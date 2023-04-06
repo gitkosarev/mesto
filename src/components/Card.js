@@ -1,9 +1,10 @@
 export default class Card {
-  constructor(data, templateSelector, handleImageClick, handleRemoval) {
+  constructor(data, templateSelector, handleImageClick, handleRemoval, handleLike) {
     this._data = data;
     this._templateSelector = templateSelector;
     this._handleImageClick = handleImageClick;
     this._handleRemoval = handleRemoval;
+    this._handleLike = handleLike;
     this._clone = document.querySelector(this._templateSelector).content.cloneNode(true);
     this._imageEl = this._clone.querySelector('.card__image');
     this._likeButton = this._clone.querySelector('.card__like-button');
@@ -21,14 +22,18 @@ export default class Card {
     this._clone.querySelector('.card__title').textContent = this._data.name;
     this._imageEl.src = this._data.link;
     this._imageEl.alt = this._data.alt;
-    this._likeCounterEl.textContent = this._data.likes ? this._data.likes.length : 0;
+    this._setLikeCounter(this._data);
+  };
+
+  _setLikeCounter(data) {
+    this._likeCounterEl.textContent = data.likes ? data.likes.length : 0;
   };
 
   _setEventListeners() {
     this._imageEl.addEventListener('click', () => {
       this._handleImageClick(this._data);
     });
-    this._likeButton.addEventListener('click', this._handleLikeClick);
+    this._likeButton.addEventListener('click', this._handleLikeClick.bind(this));
     if (this._data.isOwner) {
       this._trashButtonEl.addEventListener('click', this._handleTrashClick.bind(this));
     } else {
@@ -38,7 +43,10 @@ export default class Card {
 
   _handleLikeClick(event) {
     const buttonEl = event.target;
-    buttonEl.classList.toggle('card__like-button_active');
+    const isActive = buttonEl.classList.toggle('card__like-button_active');
+    this._handleLike(isActive, this._data._id, (updatedData) => {
+      this._setLikeCounter(updatedData);
+    });
   };
   
   _handleTrashClick(event) {
