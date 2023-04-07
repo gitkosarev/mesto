@@ -6,7 +6,9 @@
 .header__logo{background-image:url(images/header-logo.bbe2a6eafac19c3d031c.svg);background-repeat:no-repeat;background-size:contain;height:33px;margin:45px 0 0;padding:0;width:142px}@media screen and (max-width:1279px){.header__logo{height:24px;margin:27px 0 0 28px;width:104px}}
 .content{margin:0 auto;max-width:880px;padding:0}@media screen and (max-width:1279px){.content{width:100%}}
 .profile{align-items:center;display:flex;flex-direction:row;justify-content:flex-start;margin:40px auto 0;padding:0}@media screen and (max-width:1279px){.profile{align-items:center;flex-direction:column;margin:42px auto 0}}
-.profile__avatar{border-radius:50%;height:120px;margin:0;-o-object-fit:cover;object-fit:cover;padding:0;width:120px}
+.profile__avatar{display:flex;margin:0;padding:0}
+.profile__avatar-image{border-radius:50%;height:120px;-o-object-fit:cover;object-fit:cover;width:120px}
+.profile__avatar-edit{background:none;border:none;border-radius:50%;height:120px;margin:0;padding:0;position:absolute;width:120px}.profile__avatar-edit:hover{background:rgba(0,0,0,.7) url(images/edit-button.6c7bf05444b9793fdf6e.svg) no-repeat 50%;background-size:26px;cursor:pointer}
 .profile__info{align-items:baseline;display:flex;flex-direction:row;flex-wrap:wrap;margin:0 0 0 30px;max-width:336px;padding:0}@media screen and (max-width:1279px){.profile__info{justify-content:center;margin:26px auto 0}}
 .profile__name{font-size:42px;font-style:normal;font-weight:500;line-height:48px;margin:0;max-width:294px;overflow:hidden;padding:0;text-overflow:ellipsis;white-space:nowrap}@media screen and (max-width:1279px){.profile__name{font-size:27px;line-height:26px;margin:0 0 0 19px;max-width:189px;padding-left:7px;padding-top:5px;text-align:center}}
 .profile__description{flex-shrink:0;font-size:18px;font-style:normal;font-weight:400;line-height:22px;margin:9px 0 0;overflow:hidden;padding:0;text-overflow:ellipsis;white-space:nowrap;width:100%}@media screen and (max-width:1279px){.profile__description{font-size:14px;line-height:14px;margin:12px 19px 0;max-width:282px;text-align:center}}
