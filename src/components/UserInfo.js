@@ -15,12 +15,12 @@ export default class UserInfo {
   };
 
   setUserInfo({ name, description }) {
-    this._profileNameEl.textContent = name;
-    this._profileDescriptionEl.textContent = description;
+    if (name) { this._profileNameEl.textContent = name; }
+    if (description) { this._profileDescriptionEl.textContent = description; }
   };
 
   setUserAvatar(avatar) {
-    this._avatarImageEl.src = avatar;
+    if (avatar) { this._avatarImageEl.src = avatar; }
   };
   
 }

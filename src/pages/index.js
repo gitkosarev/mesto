@@ -1,4 +1,4 @@
-import { credential } from "../components/utility.js";
+import { credential, toggleSubmitCaptionOnLoad } from "../utils/utility.js";
 import Api from "../components/Api.js";
 import UserInfo from "../components/UserInfo.js";
 import Card from "../components/Card.js";
@@ -48,7 +48,7 @@ function initValidation() {
 
 initValidation();
 
-const server = new Api(credential.baseUrl, credential.token, credential.cohort);
+const api = new Api(credential.baseUrl, credential.token, credential.cohort);
 
 const userInfo = new UserInfo({
   nameSelector: profileNameSelector,
@@ -79,6 +79,7 @@ const
   editProfileButton = document.querySelector('.profile__edit-button'),
   addCardButtonEl = document.querySelector('.profile__add-button'),
   addCardForm = document.querySelector('#addCardForm'),
+  avatarForm = document.querySelector('#avatarForm'),
   editProfileForm = document.querySelector('#editProfileForm'),
   editProfileFormInputName = editProfileForm.querySelector('.popup__input_value_name'),
   editProfileFormInputDescription = editProfileForm.querySelector('.popup__input_value_description');
@@ -87,8 +88,9 @@ const
 function handleCardRemoval(cardId, callback, scope) {
   confirmRemovalPopup.open(function() {
     callback.bind(scope)();
-    server.deleteCard(cardId)
+    api.deleteCard(cardId)
       .then((result) => {
+        confirmRemovalPopup.close();
         console.log(`Photo successfully deleted. Id: ${cardId}. Result: ${result.message}`);
       })
       .catch((error) => {
@@ -99,7 +101,7 @@ function handleCardRemoval(cardId, callback, scope) {
 
 function handleLikeToggle(isActive, cardId, callback) {
   if (isActive) {
-    server.putLike(cardId)
+    api.putLike(cardId)
       .then((result) => {
         callback(result);
         console.log(`Like successfully added. Card id: ${cardId}`);
@@ -108,7 +110,7 @@ function handleLikeToggle(isActive, cardId, callback) {
         console.error(`Error while adding like. Card id: ${cardId}. Response status: ${error.status}`);
       });
   } else {
-    server.deleteLike(cardId)
+    api.deleteLike(cardId)
       .then((result) => {
         callback(result);
         console.log(`Like successfully deleted. Card id: ${cardId}`);
@@ -120,6 +122,7 @@ function handleLikeToggle(isActive, cardId, callback) {
 };
 
 function createCardElement(cardConfig) {
+  cardConfig.currentUserId = userInfo.userId;
   const card = new Card(
     cardConfig,
     cardTemplateSelector,
@@ -136,59 +139,49 @@ function appendCard(cardConfig) {
   section.addItem(cardElement);
 };
 
-function toggleSubmitCaptionOnLoad(inProcess) {
-  document.querySelector(popupOpenedSelector).querySelector(submitSelector).textContent = inProcess ? 'Сохранение...' : 'Сохранить';
-};
-
 function prependCard(cardConfig) {
-  toggleSubmitCaptionOnLoad(true);
-  server.saveCard(cardConfig.name, cardConfig.link)
+  toggleSubmitCaptionOnLoad(true, popupOpenedSelector, submitSelector);
+  api.saveCard(cardConfig.name, cardConfig.link)
     .then((result) => {
       result.isOwner = true;
       const cardElement = createCardElement(result);
       section.prependItem(cardElement);
+      toggleSubmitCaptionOnLoad(false, popupOpenedSelector, submitSelector);
+      addCardPopup.close();
       console.log(`Photo successfully saved. id: ${result._id}`);
     })
     .catch((error) => {
       console.error(`Error while saving photo. Response status: ${error.status}`);
-    })
-    .finally(() => {
-      toggleSubmitCaptionOnLoad(false);
-      addCardPopup.close();
     });
 
 };
 
 function handleProfileSubmit(inputValues) {
-  userInfo.setUserInfo(inputValues);
-  toggleSubmitCaptionOnLoad(true);
-  server.updateProfile(inputValues.name, inputValues.description)
+  toggleSubmitCaptionOnLoad(true, popupOpenedSelector, submitSelector);
+  api.updateProfile(inputValues.name, inputValues.description)
     .then((result) => {
+      userInfo.setUserInfo(inputValues);
+      toggleSubmitCaptionOnLoad(false, popupOpenedSelector, submitSelector);
+      editProfilePopup.close();
       console.log(`Profile successfully updated for user with id: ${result._id}`);
     })
     .catch((error) => {
       console.error(`Error while updating profile. Response status: ${error.status}`);
-    })
-    .finally(() => {
-      toggleSubmitCaptionOnLoad(false);
-      editProfilePopup.close();
     });
 };
 
 function handleAvatarUpdate(inputValues) {
   const link = inputValues.description;
-  toggleSubmitCaptionOnLoad(true);
-  server.updateAvatar(link)
+  toggleSubmitCaptionOnLoad(true, popupOpenedSelector, submitSelector);
+  api.updateAvatar(link)
     .then((result) => {
       userInfo.setUserAvatar(link);
+      toggleSubmitCaptionOnLoad(false, popupOpenedSelector, submitSelector);
+      avatarPopup.close();
       console.log(`Avatar successfully updated for current user with id: ${result._id}`);
     })
     .catch((error) => {
       console.error(`Error while updating avatar. Response status: ${error.status}`);
-    })
-    .finally(() => {
-      toggleSubmitCaptionOnLoad(false);
-      avatarPopup.close();
     });
 };
 
@@ -207,6 +200,7 @@ function fillProfileForm(userData) {
 };
 
 function handleAvatarEditClick() {
+  formValidators[avatarForm.getAttribute('name')].resetValidation();
   avatarPopup.open();
 };
 
@@ -250,7 +244,7 @@ function initCards(data) {
 };
 
 function init() {
-  Promise.all([ server.getUserData(), server.getInitialCards() ])
+  Promise.all([ api.getUserData(), api.getInitialCards() ])
     .then((responses) => {
       initUserInfo(responses[0]);
       initCards(responses[1]);

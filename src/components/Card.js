@@ -18,15 +18,23 @@ export default class Card {
     return this._clone;
   };
 
+  _setLikeCounter(data) {
+    this._likeCounterEl.textContent = data.likes ? data.likes.length : 0;
+  };
+
+  _setLikeByCurrentUser(data) {
+    const likesArray = data.likes;
+    if (likesArray.some((item) => item._id === data.currentUserId)) {
+      this._likeButton.classList.add('card__like-button_active');
+    }
+  };
+
   _fillData() {
     this._clone.querySelector('.card__title').textContent = this._data.name;
     this._imageEl.src = this._data.link;
     this._imageEl.alt = this._data.alt;
     this._setLikeCounter(this._data);
-  };
-
-  _setLikeCounter(data) {
-    this._likeCounterEl.textContent = data.likes ? data.likes.length : 0;
+    this._setLikeByCurrentUser(this._data);
   };
 
   _setEventListeners() {

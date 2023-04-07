@@ -5,6 +5,14 @@ export default class Api {
     this._cohortId = cohortId;
   };
 
+  _handleResponse(response) {
+    if (response.ok) {
+      return response.json();
+    } else {
+      return Promise.reject(response);
+    }
+  };
+
   getUserData() {
     return fetch(`${this._baseUrl}v1/${this._cohortId}/users/me`, {
       method: "GET",
@@ -13,13 +21,7 @@ export default class Api {
         "Content-Type": "application/json"
       }
     })
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          return Promise.reject(response);
-        }
-      });
+      .then(this._handleResponse);
   };
 
   getInitialCards() {
@@ -30,13 +32,7 @@ export default class Api {
         "Content-Type": "application/json"
       }
     })
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          return Promise.reject(response);
-        }
-      });
+      .then(this._handleResponse);
   };
 
   updateProfile(name, about) {
@@ -51,13 +47,7 @@ export default class Api {
         about
       })
     })
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          return Promise.reject(response);
-        }
-      });
+      .then(this._handleResponse);
   };
 
   saveCard(name, link) {
@@ -72,13 +62,7 @@ export default class Api {
         link
       })
     })
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          return Promise.reject(response);
-        }
-      });
+      .then(this._handleResponse);
   };
 
   deleteCard(cardId) {
@@ -89,13 +73,7 @@ export default class Api {
         "Content-Type": "application/json"
       }
     })
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          return Promise.reject(response);
-        }
-      });
+      .then(this._handleResponse);
   };
 
   putLike(cardId) {
@@ -106,13 +84,7 @@ export default class Api {
         "Content-Type": "application/json"
       }
     })
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          return Promise.reject(response);
-        }
-      });
+      .then(this._handleResponse);
   };
 
   deleteLike(cardId) {
@@ -123,13 +95,7 @@ export default class Api {
         "Content-Type": "application/json"
       }
     })
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          return Promise.reject(response);
-        }
-      });
+      .then(this._handleResponse);
   };
 
   updateAvatar(link) {
@@ -143,13 +109,7 @@ export default class Api {
         avatar: link
       })
     })
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          return Promise.reject(response);
-        }
-      });
+      .then(this._handleResponse);
   };
 
 }
