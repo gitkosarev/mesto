@@ -19,7 +19,8 @@ const
   openImagePopupSelector = '#openImagePopup',
   confirmPopupSelector = '#confirmPopup',
   avatarPopupSelector = '#avatarPopup',
-  avatarSelector = '.profile__avatar',
+  avatarSelector = '.profile__avatar-image',
+  avatarEditSelector = '.profile__avatar-edit',
   profileNameSelector = '.profile__name',
   profileDescriptionSelector = '.profile__description';
 
@@ -67,13 +68,12 @@ confirmRemovalPopup.setEventListeners();
 
 const avatarPopup = new PopupWithForm(avatarPopupSelector, handleAvatarUpdate);
 avatarPopup.setEventListeners();
-/// !!!!!!!!!!!!!!!!!!!!!!!!
-avatarPopup.open();
 
 
 const 
-  addCardButtonEl = document.querySelector('.profile__add-button'),
+  avatarEditButton = document.querySelector(avatarEditSelector),
   editProfileButton = document.querySelector('.profile__edit-button'),
+  addCardButtonEl = document.querySelector('.profile__add-button'),
   addCardForm = document.querySelector('#addCardForm'),
   editProfileForm = document.querySelector('#editProfileForm'),
   editProfileFormInputName = editProfileForm.querySelector('.popup__input_value_name'),
@@ -195,6 +195,10 @@ function fillProfileForm(userData) {
   editProfileFormInputDescription.value = userData.description;
 };
 
+function handleAvatarEditClick() {
+  avatarPopup.open();
+};
+
 function handleEditProfileClick() {
   const userData = userInfo.getUserInfo();
   fillProfileForm(userData);
@@ -206,6 +210,7 @@ function handleAddCardClick() {
   addCardPopup.open();
 };
 
+avatarEditButton.addEventListener('click', handleAvatarEditClick);
 editProfileButton.addEventListener('click', handleEditProfileClick);
 addCardButtonEl.addEventListener('click', handleAddCardClick);
 
