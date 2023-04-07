@@ -1,10 +1,15 @@
 export default class Card {
-  constructor(data, templateSelector, handleImageClick) {
-      this._data = data;
-      this._templateSelector = templateSelector;
-      this._handleImageClick = handleImageClick;
-      this._clone = document.querySelector(this._templateSelector).content.cloneNode(true);
-      this._imageEl = this._clone.querySelector('.card__image');
+  constructor(data, templateSelector, handleImageClick, handleRemoval, handleLike) {
+    this._data = data;
+    this._templateSelector = templateSelector;
+    this._handleImageClick = handleImageClick;
+    this._handleRemoval = handleRemoval;
+    this._handleLike = handleLike;
+    this._clone = document.querySelector(this._templateSelector).content.cloneNode(true);
+    this._imageEl = this._clone.querySelector('.card__image');
+    this._likeButton = this._clone.querySelector('.card__like-button');
+    this._trashButtonEl = this._clone.querySelector('.card__trash-button');
+    this._likeCounterEl = this._clone.querySelector('.card__like-counter');
   }
 
   create() {
@@ -17,23 +22,45 @@ export default class Card {
     this._clone.querySelector('.card__title').textContent = this._data.name;
     this._imageEl.src = this._data.link;
     this._imageEl.alt = this._data.alt;
+    this._setLikeCounter(this._data);
+  };
+
+  _setLikeCounter(data) {
+    this._likeCounterEl.textContent = data.likes ? data.likes.length : 0;
   };
 
   _setEventListeners() {
     this._imageEl.addEventListener('click', () => {
       this._handleImageClick(this._data);
     });
-    this._clone.querySelector('.card__like-button').addEventListener('click', this._handleLikeClick);
-    this._clone.querySelector('.card__trash-button').addEventListener('click', this._handleTrashClick);
+    this._likeButton.addEventListener('click', this._handleLikeClick.bind(this));
+    if (this._data.isOwner) {
+      this._trashButtonEl.addEventListener('click', this._handleTrashClick.bind(this));
+    } else {
+      this._trashButtonEl.remove();
+    }
   };
 
   _handleLikeClick(event) {
     const buttonEl = event.target;
-    buttonEl.classList.toggle('card__like-button_active');
+    const isActive = buttonEl.classList.toggle('card__like-button_active');
+    this._handleLike(isActive, this._data._id, (updatedData) => {
+      this._setLikeCounter(updatedData);
+    });
   };
   
   _handleTrashClick(event) {
-    const buttonEl = event.target;
+    this._handleRemoval(
+      this._data._id,
+      function () {
+        const buttonEl = event.target;
+        this._removeCard(buttonEl);
+      },
+      this
+    );
+  };
+  
+  _removeCard(buttonEl) {
     buttonEl.closest('.card').remove();
   };
   
