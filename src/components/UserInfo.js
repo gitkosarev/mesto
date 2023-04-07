@@ -1,15 +1,15 @@
 export default class UserInfo {
-  constructor({ nameSelector, descriptionSelector, avatarSelector }) {
+  constructor({ nameSelector, descriptionSelector, avatarImageSelector }) {
     this._profileNameEl = document.querySelector(nameSelector);
     this._profileDescriptionEl = document.querySelector(descriptionSelector);
-    this._avatarSelectorEl = document.querySelector(avatarSelector);
+    this._avatarImageEl = document.querySelector(avatarImageSelector);
   }
 
   getUserInfo() {
     const info = {
       name: this._profileNameEl.textContent,
       description: this._profileDescriptionEl.textContent,
-      avatar: this._avatarSelectorEl.src
+      avatar: this._avatarImageEl.src
     };
     return info;
   };
@@ -20,7 +20,7 @@ export default class UserInfo {
   };
 
   setUserAvatar(avatar) {
-    this._avatarSelectorEl.src = avatar;
+    this._avatarImageEl.src = avatar;
   };
   
 }

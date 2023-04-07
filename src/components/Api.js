@@ -1,11 +1,12 @@
 export default class Api {
-  constructor(url, token) {
-    this._url = url;
+  constructor(baseUrl, token, cohortId) {
+    this._baseUrl = baseUrl;
     this._token = token;
+    this._cohortId = cohortId;
   };
 
-  getUserInfo() {
-    return fetch(this._url, {
+  getUserData() {
+    return fetch(`${this._baseUrl}v1/${this._cohortId}/users/me`, {
       method: "GET",
       headers: {
         authorization: this._token,
@@ -22,7 +23,7 @@ export default class Api {
   };
 
   getInitialCards() {
-    return fetch(this._url, {
+    return fetch(`${this._baseUrl}v1/${this._cohortId}/cards`, {
       method: "GET",
       headers: {
         authorization: this._token,
@@ -39,7 +40,7 @@ export default class Api {
   };
 
   updateProfile(name, about) {
-    return fetch(this._url, {
+    return fetch(`${this._baseUrl}v1/${this._cohortId}/users/me`, {
       method: "PATCH",
       headers: {
         authorization: this._token,
@@ -60,7 +61,7 @@ export default class Api {
   };
 
   saveCard(name, link) {
-    return fetch(this._url, {
+    return fetch(`${this._baseUrl}v1/${this._cohortId}/cards`, {
       method: "POST",
       headers: {
         authorization: this._token,
@@ -80,8 +81,8 @@ export default class Api {
       });
   };
 
-  deleteCard() {
-    return fetch(this._url, {
+  deleteCard(cardId) {
+    return fetch(`${this._baseUrl}v1/${this._cohortId}/cards/${cardId}`, {
       method: "DELETE",
       headers: {
         authorization: this._token,
@@ -97,8 +98,8 @@ export default class Api {
       });
   };
 
-  putLike() {
-    return fetch(this._url, {
+  putLike(cardId) {
+    return fetch(`${this._baseUrl}v1/${this._cohortId}/cards/${cardId}/likes`, {
       method: "PUT",
       headers: {
         authorization: this._token,
@@ -114,8 +115,8 @@ export default class Api {
       });
   };
 
-  deleteLike() {
-    return fetch(this._url, {
+  deleteLike(cardId) {
+    return fetch(`${this._baseUrl}v1/${this._cohortId}/cards/${cardId}/likes`, {
       method: "DELETE",
       headers: {
         authorization: this._token,
@@ -132,7 +133,7 @@ export default class Api {
   };
 
   updateAvatar(link) {
-    return fetch(this._url, {
+    return fetch(`${this._baseUrl}v1/${this._cohortId}/users/me/avatar`, {
       method: "PATCH",
       headers: {
         authorization: this._token,

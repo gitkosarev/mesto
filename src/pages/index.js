@@ -12,6 +12,8 @@ import './index.css';
 
 
 const
+  popupOpenedSelector = '.popup_opened',
+  submitSelector = '.popup__submit',
   cardsSelector = '.cards',
   cardTemplateSelector = '#cardTemplate',
   addCardPopupSelector = '#addCardPopup',
@@ -19,7 +21,7 @@ const
   openImagePopupSelector = '#openImagePopup',
   confirmPopupSelector = '#confirmPopup',
   avatarPopupSelector = '#avatarPopup',
-  avatarSelector = '.profile__avatar-image',
+  avatarImgSelector = '.profile__avatar-image',
   avatarEditSelector = '.profile__avatar-edit',
   profileNameSelector = '.profile__name',
   profileDescriptionSelector = '.profile__description';
@@ -27,7 +29,7 @@ const
 const validationConfig = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__submit',
+  submitButtonSelector: submitSelector,
   inactiveButtonClass: 'popup__submit_inactive',
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__input-error_active'
@@ -46,10 +48,12 @@ function initValidation() {
 
 initValidation();
 
+const server = new Api(credential.baseUrl, credential.token, credential.cohort);
+
 const userInfo = new UserInfo({
   nameSelector: profileNameSelector,
   descriptionSelector: profileDescriptionSelector,
-  avatarSelector: avatarSelector
+  avatarImageSelector: avatarImgSelector
 });
 
 let section;
@@ -83,8 +87,7 @@ const
 function handleCardRemoval(cardId, callback, scope) {
   confirmRemovalPopup.open(function() {
     callback.bind(scope)();
-    const api = new Api(`${credential.baseUrl}v1/${credential.cohort}/cards/${cardId}`, credential.token);
-    api.deleteCard()
+    server.deleteCard(cardId)
       .then((result) => {
         console.log(`Photo successfully deleted. Id: ${cardId}. Result: ${result.message}`);
       })
@@ -95,9 +98,8 @@ function handleCardRemoval(cardId, callback, scope) {
 };
 
 function handleLikeToggle(isActive, cardId, callback) {
-  const api = new Api(`${credential.baseUrl}v1/${credential.cohort}/cards/${cardId}/likes`, credential.token);
   if (isActive) {
-    api.putLike()
+    server.putLike(cardId)
       .then((result) => {
         callback(result);
         console.log(`Like successfully added. Card id: ${cardId}`);
@@ -106,7 +108,7 @@ function handleLikeToggle(isActive, cardId, callback) {
         console.error(`Error while adding like. Card id: ${cardId}. Response status: ${error.status}`);
       });
   } else {
-    api.deleteLike()
+    server.deleteLike(cardId)
       .then((result) => {
         callback(result);
         console.log(`Like successfully deleted. Card id: ${cardId}`);
@@ -134,9 +136,13 @@ function appendCard(cardConfig) {
   section.addItem(cardElement);
 };
 
+function toggleSubmitCaptionOnLoad(inProcess) {
+  document.querySelector(popupOpenedSelector).querySelector(submitSelector).textContent = inProcess ? 'Сохранение...' : 'Сохранить';
+};
+
 function prependCard(cardConfig) {
-  const api = new Api(`${credential.baseUrl}v1/${credential.cohort}/cards`, credential.token);
-  api.saveCard(cardConfig.name, cardConfig.link)
+  toggleSubmitCaptionOnLoad(true);
+  server.saveCard(cardConfig.name, cardConfig.link)
     .then((result) => {
       result.isOwner = true;
       const cardElement = createCardElement(result);
@@ -145,43 +151,48 @@ function prependCard(cardConfig) {
     })
     .catch((error) => {
       console.error(`Error while saving photo. Response status: ${error.status}`);
+    })
+    .finally(() => {
+      toggleSubmitCaptionOnLoad(false);
+      addCardPopup.close();
     });
 
 };
 
 function handleProfileSubmit(inputValues) {
   userInfo.setUserInfo(inputValues);
-  editProfilePopup.close();
-  const api = new Api(`${credential.baseUrl}v1/${credential.cohort}/users/me`, credential.token);
-  api.updateProfile(inputValues.name, inputValues.description)
+  toggleSubmitCaptionOnLoad(true);
+  server.updateProfile(inputValues.name, inputValues.description)
     .then((result) => {
       console.log(`Profile successfully updated for user with id: ${result._id}`);
     })
     .catch((error) => {
       console.error(`Error while updating profile. Response status: ${error.status}`);
+    })
+    .finally(() => {
+      toggleSubmitCaptionOnLoad(false);
+      editProfilePopup.close();
     });
 };
 
 function handleAvatarUpdate(inputValues) {
   const link = inputValues.description;
-  const api = new Api(`${credential.baseUrl}v1/${credential.cohort}/users/me/avatar`, credential.token);
-  api.updateAvatar(link)
+  toggleSubmitCaptionOnLoad(true);
+  server.updateAvatar(link)
     .then((result) => {
       userInfo.setUserAvatar(link);
-      avatarPopup.close();
       console.log(`Avatar successfully updated for current user with id: ${result._id}`);
     })
     .catch((error) => {
       console.error(`Error while updating avatar. Response status: ${error.status}`);
+    })
+    .finally(() => {
+      toggleSubmitCaptionOnLoad(false);
+      avatarPopup.close();
     });
 };
 
 function handleAddCardSubmit(inputValues) {
-  addCardPopup.close();
-  addCard(inputValues);
-};
-
-function addCard(inputValues) {
   const config = {
     name: inputValues.name,
     link: inputValues.description,
@@ -215,16 +226,16 @@ editProfileButton.addEventListener('click', handleEditProfileClick);
 addCardButtonEl.addEventListener('click', handleAddCardClick);
 
 
-function initUserInfo(result) {
-  userInfo.userId = result._id;
-  userInfo.setUserInfo({ name: result.name, description: result.about });
-  userInfo.setUserAvatar(result.avatar);
-  console.log(`your id: ${result._id}`);
+function initUserInfo(data) {
+  userInfo.userId = data._id;
+  userInfo.setUserInfo({ name: data.name, description: data.about });
+  userInfo.setUserAvatar(data.avatar);
+  console.log(`your id: ${data._id}`);
 };
 
-function initCards(result) {
+function initCards(data) {
   if ('content' in document.createElement('template')) {
-    const cardsArray = result.map(function(item) {
+    const cardsArray = data.map(function(item) {
       item.alt = `фото ${item.name}`;
       return item;
     });
@@ -239,9 +250,7 @@ function initCards(result) {
 };
 
 function init() {
-  const userApi = new Api(`${credential.baseUrl}v1/${credential.cohort}/users/me`, credential.token);
-  const cardsApi = new Api(`${credential.baseUrl}v1/${credential.cohort}/cards`, credential.token);
-  Promise.all([ userApi.getUserInfo(), cardsApi.getInitialCards() ])
+  Promise.all([ server.getUserData(), server.getInitialCards() ])
     .then((responses) => {
       initUserInfo(responses[0]);
       initCards(responses[1]);
